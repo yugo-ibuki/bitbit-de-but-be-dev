@@ -1,11 +1,12 @@
 import { json, useLoaderData } from "@remix-run/react"
 
 export const loader = () => {
-    console.log('env api_key: ', process.env.API_KEY || 'not found');
+    const key = environment?.API_KEY
+    console.log('env api_key: ', key || 'not found');
     
     return json({
         test: 'hello',
-        env: process.env.API_KEY || 'not found',
+        env: key || 'not found',
     })
 }
 
