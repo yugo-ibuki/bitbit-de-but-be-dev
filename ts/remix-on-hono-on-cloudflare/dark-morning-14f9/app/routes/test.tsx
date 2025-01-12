@@ -5,6 +5,7 @@ export const loader = () => {
     
     return json({
         test: 'hello',
+        env: process.env.API_KEY || 'not found',
     })
 }
 
