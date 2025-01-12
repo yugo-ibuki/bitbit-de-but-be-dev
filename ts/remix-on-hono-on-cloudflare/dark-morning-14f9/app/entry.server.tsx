@@ -11,6 +11,8 @@ import { renderToReadableStream } from "react-dom/server";
 
 const ABORT_DELAY = 5000;
 
+console.log(process.env.API_KEY);
+
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
