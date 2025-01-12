@@ -1,0 +1,6 @@
+name = "my-remix-app"
+main = "./app/entry.worker.ts"
+compatibility_date = "2024-01-12"
+
+[vars]
+ENV = "development"
