@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs } from "@remix-run/cloudflare"
 import { json, useLoaderData } from "@remix-run/react"
 
 export const loader = ({ context: { env } }: LoaderFunctionArgs) => {
-    const key = env.API_KEY
+    const key = env
     console.log('env api_key: ', key || 'not found');
     
     return json({
