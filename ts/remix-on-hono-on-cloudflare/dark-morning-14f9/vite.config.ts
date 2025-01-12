@@ -12,6 +12,19 @@ declare module "@remix-run/cloudflare" {
 }
 
 export default defineConfig({
+  // build: {
+  //   outDir: "build",
+  //   rollupOptions: {
+  //     output: {
+  //       // publicディレクトリ内のbuildを防ぐ
+  //       dir: "build",
+  //       // アセットの出力パスをカスタマイズ
+  //       assetFileNames: "assets/[name]-[hash][extname]",
+  //       chunkFileNames: "_shared/[name]-[hash].js",
+  //       entryFileNames: "entry.[name]-[hash].js"
+  //     }
+  //   }
+  // },
   plugins: [
     remixCloudflareDevProxy(),
     remix({
@@ -22,6 +35,8 @@ export default defineConfig({
         v3_singleFetch: true,
         v3_lazyRouteDiscovery: true,
       },
+      // ビルド出力先を明示的に指定
+      // buildDirectory: "build"
     }),
     tsconfigPaths(),
   ],
