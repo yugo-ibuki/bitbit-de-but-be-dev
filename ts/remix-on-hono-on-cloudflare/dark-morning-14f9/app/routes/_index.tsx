@@ -8,18 +8,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = () => {
-  console.log('loader env api_key: ', process.env.API_KEY);
-  
-  return json({
-    test: 'hello',
-  })
-}
-
 export default function Index() {
-  const data = useLoaderData()
-  console.log('data: ', data);
-  
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-16">
