@@ -1,4 +1,4 @@
-import { useState, use, useOptimistic } from 'react'
+import { useState, use, useOptimistic, useTransition } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -8,7 +8,7 @@ function fetchNumber() {
   return new Promise<number>(resolve => {
     setTimeout(() => {
       resolve(Math.floor(Math.random() * 100))
-    }, 1000)
+    }, 2000)
   })
 }
 
@@ -17,20 +17,29 @@ const numberPromise = fetchNumber()
 
 function App() {
   const [count, setCount] = useState(0)
+  const [isPending, startTransition] = useTransition()
   const [optimisticCount, addOptimisticCount] = useOptimistic(
     count,
-    (currentState: number, delta: number) => currentState + delta
+    (currentState: number) => currentState + 1
   )
 
   // useを使用して非同期データを取得
   const randomNumber = use(numberPromise)
 
   const handleOptimisticUpdate = async () => {
-    // 楽観的な更新
-    addOptimisticCount(1)
-    // 実際の更新
-    await new Promise(resolve => setTimeout(resolve, 500))
-    setCount(c => c + 1)
+    startTransition(async () => {
+      // 楽観的な更新をトリガー
+      addOptimisticCount(1)
+      
+      try {
+        // バックグラウンドで実際の更新を実行
+        await new Promise(resolve => setTimeout(resolve, 500))
+        setCount(count + 1)
+      } catch (error) {
+        // エラーが発生した場合、楽観的な更新は自動的にロールバックされます
+        console.error('Update failed:', error)
+      }
+    })
   }
 
   return (
@@ -46,8 +55,8 @@ function App() {
       <h1>React 19 Hooks Demo</h1>
       <div className="card">
         <h2>useOptimistic Demo</h2>
-        <button onClick={handleOptimisticUpdate}>
-          Optimistic count is {optimisticCount}
+        <button onClick={handleOptimisticUpdate} disabled={isPending}>
+          count is {optimisticCount}
         </button>
         <p>Actual count: {count}</p>
 
