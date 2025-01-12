@@ -12,6 +12,7 @@ export const loader = () => {
 export default function Test() {
     const data = useLoaderData()
     console.log('data: ', data);
+    console.log('dddd');
     
     return <div>Test</div>
 }
