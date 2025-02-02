@@ -43,6 +43,9 @@ func FindFirst[T comparable](s []T, target T) int {
 
 // 数値型のみを受け付ける例
 type Number interface {
+	// ~ は型のエイリアスを許可する演算子
+	// 例：~int は int と int32 の両方を許可する
+	// つまり、intやfloat64を基底型とするすべてのカスタム型を受け付ける
 	~int | ~float64
 }
 
