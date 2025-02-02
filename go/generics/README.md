@@ -181,3 +181,21 @@ func Contains[T comparable](slice []T, element T) bool {
 3. 構造体は、すべてのフィールドが comparable な場合のみ comparable
 4. マップのキーには comparable な型しか使えない
 5. インターフェースも comparable だが、実際の比較は実装型に依存する
+
+## インターフェースによる型の制約
+
+プリミティブな型はジェネリクスに使用できないため、
+
+```go
+type Number interface {
+    ~int | ~float64
+}
+
+func Sum[T Number](numbers []T) T {
+    var sum T
+    for _, n := range numbers {
+        sum += n
+    }
+    return sum
+}
+```
