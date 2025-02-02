@@ -91,3 +91,93 @@ func MapComparable[T comparable, U any](s []T, f func(T) U) []U {
     return result
 }
 ```
+
+## comparable 制約
+
+`comparable` 制約は、`==` と `!=` による比較が可能な型を表します。
+
+```go
+func FindFirst[T comparable](s []T, target T) int {
+    for i, v := range s {
+        if v == target {
+            return i
+        }
+    }
+    return -1
+}
+```
+
+## comparable 種類の説明
+
+### Comparable な型
+
+1. プリミティブ型（基本型）
+
+// すべてcomparable
+var a int     // 整数型
+var b string  // 文字列型
+var c bool    // 真偽値型
+var d float64 // 浮動小数点型
+var e byte    // uint8の別名
+var f rune    // int32の別名
+
+2. 複合型（条件付き）
+
+```go
+// ポインタ
+var p1 *int
+var p2 *string
+
+// 固定長配列（要素がcomparableな場合）
+var arr1 [5]int
+var arr2 [3]string
+
+// 構造体（すべてのフィールドがcomparableな場合）
+type User struct {
+    ID   int
+    Name string
+    Age  int
+}
+```
+
+### Comparable でない型
+
+```go
+// 可変長のデータ構造は基本的にcomparableではない
+var slice []int
+var m map[string]int
+var ch chan int
+var f func()
+
+// comparableではないフィールドを含む構造体
+type Team struct {
+    Name    string
+    Members []string  // スライスを含むためTeam全体もcomparableではない
+}
+```
+
+### よくある使用パターン
+
+```go
+// 1. マップのキーとして使用（キーはcomparableである必要がある）
+type UserID int
+map[UserID]string    // OK
+map[[]int]string     // コンパイルエラー：スライスはcomparableではない
+
+// 2. ジェネリック関数での等価性チェック
+func Contains[T comparable](slice []T, element T) bool {
+    for _, v := range slice {
+        if v == element {  // comparableだから == が使える
+            return true
+        }
+    }
+    return false
+}
+```
+
+### 覚えておくとよいポイント
+1. プリミティブ型は基本的にすべて comparable
+2. スライス、マップ、チャネル、関数は comparable ではない
+3. 構造体は、すべてのフィールドが comparable な場合のみ comparable
+4. マップのキーには comparable な型しか使えない
+5. インターフェースも comparable だが、実際の比較は実装型に依存する
