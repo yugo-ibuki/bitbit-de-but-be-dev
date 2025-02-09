@@ -1,0 +1,25 @@
+{
+    "name": "ts-morph-playground",
+    "version": "1.0.0",
+    "description": "Playground for ts-morph",
+    "main": "src/index.ts",
+    "scripts": {
+        "setup": "ts-node src/setup.ts",
+        "create": "pnpm run setup && ts-node src/createExample.ts",
+        "edit": "ts-node src/editExample.ts"
+    },
+    "dependencies": {
+        "ts-morph": "^21.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.13.1",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
+    },
+    "author": "",
+    "license": "MIT",
+    "packageManager": "pnpm@9.14.2",
+    "volta": {
+        "node": "18.17.1"
+    }
+}
