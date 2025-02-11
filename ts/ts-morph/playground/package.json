@@ -6,7 +6,8 @@
     "scripts": {
         "setup": "ts-node src/setup.ts",
         "create": "pnpm run setup && ts-node src/createExample.ts",
-        "edit": "ts-node src/editExample.ts"
+        "edit": "ts-node src/editExample.ts",
+        "edit-objects": "ts-node src/editObject.ts"
     },
     "dependencies": {
         "ts-morph": "^21.0.1"
