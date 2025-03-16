@@ -1,0 +1,28 @@
+.wrap {
+  width: 100%;
+  height: 500px;
+  position: relative;
+}
+
+.box {
+  width: 200px;
+  height: 200px;
+  display: block;
+  background: blue;
+  margin: 100px auto 0;
+}
+
+.click {
+  width: 100px;
+  height: 100px;
+  background: red;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* これがあることで、click要素はクリックできず、画面遷移ができる */
+  pointer-events: none;
+  /* 必要に合わせてopacityなどを追加すると良い */
+  /*opacity: 0;*/
+}
