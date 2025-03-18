@@ -1,0 +1,16 @@
+{
+  "name": "zen-test-project",
+  "version": "1.0.0",
+  "description": "Go型をTypeScriptとZodスキーマに変換するサンプルプロジェクト",
+  "scripts": {
+    "generate:ts": "tygo generate",
+    "generate:zod": "ts-to-zod",
+    "generate": "npm run generate:ts && npm run generate:zod"
+  },
+  "devDependencies": {
+    "ts-to-zod": "^3.15.0"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  }
+}
