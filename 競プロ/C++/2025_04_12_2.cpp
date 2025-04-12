@@ -28,6 +28,11 @@ int main() {
   stringstream ss(input);
   string A_str, op, B_str;
 
+  // 以下のような書き方をしても良い
+  // int A, B;
+  // string op;
+  // cin >> A >> op >> B;
+
   ss >> A_str >> op >> B_str;
 
   if (op == "+") {
