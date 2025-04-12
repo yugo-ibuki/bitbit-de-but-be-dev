@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <sstream>
 using namespace std;
  
 /**
@@ -21,6 +23,26 @@ using namespace std;
  * +-------------------+------------------------+---------------------------+
  */
 int main() {
-  cout << "こんにちは" << endl;
-  cout << "AtCoder" << endl;
+  string input;
+  getline(cin, input);
+  stringstream ss(input);
+  string A_str, op, B_str;
+
+  ss >> A_str >> op >> B_str;
+
+  if (op == "+") {
+    cout << stoi(A_str) + stoi(B_str) << endl;
+  } else if (op == "-") {
+    cout << stoi(A_str) - stoi(B_str) << endl;
+  } else if (op == "*") {
+    cout << stoi(A_str) * stoi(B_str) << endl;
+  } else if (op == "/") {
+    cout << stoi(A_str) / stoi(B_str) << endl;
+  } else if (op == "?") {
+    cout << "error" << endl;
+  } else if (op == "=") {
+    cout << "error" << endl;
+  } else if (op == "!") {
+    cout << "error" << endl;
+  }
 }
