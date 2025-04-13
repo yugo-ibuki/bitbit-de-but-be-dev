@@ -42,7 +42,7 @@ int main() {
   rep(i, 0, M) cin >> T[i]; // 赤いカードの入力
 
   int ans = 0;
-  rep(si, 0, N) {
+  rep(si, 0, N) { // プラスにするだけなので、青いカードのみを考えれば良い
       int point = 0;
       rep(i, 0, N) if (S[i] == S[si]) point++;
       rep(i, 0, M) if (T[i] == S[si]) point--;
