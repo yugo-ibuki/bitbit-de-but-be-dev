@@ -37,6 +37,9 @@ int check() {
       int ok = 1;
       rep(y, 0, H) if (A[y][x] == '#') ok = 0;
       if (ok) {
+          // 列を削除
+          // str.substr(start, length): start位置からlength文字分の部分文字列を返す
+          // str.substr(start): start位置から文字列の最後までの部分文字列を返す
           rep(yy, 0, H) A[yy] = A[yy].substr(0, x) + A[yy].substr(x + 1);
           W--;
           return 1;
