@@ -19,6 +19,8 @@ using namespace std;
  * 
  * 各操作でどの行または列を選ぶかによらず、最終的なマス目は一意に定まることが示せます。
  * 最終的なマス目を求めてください。
+ * 
+ * 解説: https://blog.hamayanhamayan.com/entry/2018/08/26/001618
  */
 int H, W;
 string A[101];
