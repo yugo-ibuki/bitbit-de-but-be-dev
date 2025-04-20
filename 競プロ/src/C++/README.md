@@ -4,6 +4,10 @@
 
 `g++ -o out 2025_04_12.cpp`
 
+## プラグインの使い方
+
+https://kaiyou9.com/atcoder-cpp-env/
+
 ## AtCoder
 
 ### コンテスト一覧
