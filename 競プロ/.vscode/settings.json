@@ -1,0 +1,14 @@
+{
+    "[cpp]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
+    // "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "*.ejs": "html",
+        "ostream": "cpp",
+        "iostream": "cpp"
+    },
+    "forbeslindesay-taskrunner.prefix":"-",
+    "forbeslindesay-taskrunner.source": "Workspace"
+}

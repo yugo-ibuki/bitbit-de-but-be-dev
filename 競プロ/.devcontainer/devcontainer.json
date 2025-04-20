@@ -1,0 +1,30 @@
+{
+    "name": "atcoder-cpp",
+
+    "build": {
+        "context": "..",
+        "dockerfile": "../Dockerfile"
+    },
+    
+    // "workspaceFolder": "/AtCoder",
+    // "mounts": [
+    //     "source=${localWorkspaceFolder},target=/AtCoder,type=bind"
+    // ],
+    "containerEnv": {
+        "WORKSPACE_DIR": "${containerWorkspaceFolder}"
+    },
+    "postAttachCommand": "${containerWorkspaceFolder}/.scripts/login.sh",
+
+    "customizations": {
+        "vscode": {
+            "settings": {
+                // applesilicon bug
+                "extensions.verifySignature": false
+            },
+            "extensions": [
+                "ms-vscode.cpptools",
+                "forbeslindesay.forbeslindesay-taskrunner"
+            ]
+        }
+    }
+}
