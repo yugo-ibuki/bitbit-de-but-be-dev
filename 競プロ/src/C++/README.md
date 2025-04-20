@@ -22,6 +22,10 @@ https://atcoder.jp/contests
 
 https://atcoder.jp/contests/apg4b
 
+#### 典型問題
+
+https://atcoder.jp/contests/typical90
+
 ### 補助知識
 
 AtCoder Beginner Contest (ABC)：100 分（1 時間 40 分）
