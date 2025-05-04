@@ -7,6 +7,8 @@ using namespace std;
 #define rep(i, a, b) for (int i = a; i < b; i++)
 
 int main() {
+    string S;
+    cin >> S;
    // この問題は、アルファベット26文字しかないので、O(N)で十分
     // 過半数を超える場合のみ、この条件が考慮される。
     // そして、過半数を超えるのは、隣り合う文字が同じ場合か、1つしか空いていない場合のみ。
