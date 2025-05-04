@@ -7,32 +7,13 @@ using namespace std;
 #define rep(i, a, b) for (int i = a; i < b; i++)
 
 int main() {
-  string N;
-  cin >> N;
-
-  vector<string> S(N.size());
-  rep(i, 0, N.size()) S[i] = N[i];
-
-  map<string, int> mp;
-  rep(i, 0, N.size()) {
-    mp[S[i]]++;
-  };
-
-  int max_value = 0;
-  string max_key = "";
-  for (auto [key, value] : mp) {
-    if (max_value < value) {
-      max_key = key;
-    }
-    max_value = max(max_value, value);
-  }
-
-  int start = 0;
-  int end = 0;
-  for (int i = 0; i < N.size(); i++) {
-    
-  }
-
-  cout << max_key << endl;
-  cout << max_value << endl;
+   // この問題は、アルファベット26文字しかないので、O(N)で十分
+    // 過半数を超える場合のみ、この条件が考慮される。
+    // そして、過半数を超えるのは、隣り合う文字が同じ場合か、1つしか空いていない場合のみ。
+    for (int i = 0; i+1 < S.size(); ++i) {
+        // 隣り合う文字が同じ場合
+        if (S[i] == S[i+1]) l = i+1, r = i+2;
+        // 隣り合う文字が違う場合
+        if (i+2 < S.size() && S[i] == S[i+2]) l = i+1, r = i+3;
+        // 2つ以上空く場合はスキップされる。なぜなら、2つ以上空く場合は過半数になり得ないから。
 }
