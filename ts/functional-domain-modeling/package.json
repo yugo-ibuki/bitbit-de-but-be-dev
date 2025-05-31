@@ -1,0 +1,22 @@
+{
+  "name": "functional-domain-modeling",
+  "version": "1.0.0",
+  "description": "Learning functional domain modeling with TypeScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": ["functional-programming", "domain-modeling", "typescript"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "fp-ts": "^2.16.2"
+  }
+}
