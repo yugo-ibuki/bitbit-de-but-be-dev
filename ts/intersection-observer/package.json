@@ -1,0 +1,24 @@
+{
+  "name": "intersection-observer-playground",
+  "version": "1.0.0",
+  "description": "TypeScript playground for Intersection Observer API",
+  "main": "main.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "tsc --watch & live-server",
+    "clean": "rm -f *.js *.js.map"
+  },
+  "keywords": [
+    "typescript",
+    "intersection-observer",
+    "dom",
+    "web-api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^18.0.0"
+  }
+}

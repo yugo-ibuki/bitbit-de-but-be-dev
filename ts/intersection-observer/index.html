@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intersection Observer Playground</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Intersection Observer Playground</h1>
+        <p>スクロールして要素の表示/非表示を確認してください</p>
+    </header>
+
+    <main>
+        <section class="spacer">
+            <p>スクロールしてください ↓</p>
+        </section>
+
+        <section class="observed-section" data-id="section-1">
+            <h2>セクション 1</h2>
+            <p>この要素が画面に入ると背景色が変わります</p>
+        </section>
+
+        <section class="spacer"></section>
+
+        <section class="observed-section" data-id="section-2">
+            <h2>セクション 2</h2>
+            <p>この要素も監視対象です</p>
+        </section>
+
+        <section class="spacer"></section>
+
+        <section class="observed-section fade-in" data-id="section-3">
+            <h2>セクション 3</h2>
+            <p>この要素はフェードインアニメーション付きです</p>
+        </section>
+
+        <section class="spacer"></section>
+
+        <section class="observed-section lazy-load" data-id="section-4">
+            <h2>セクション 4</h2>
+            <p>この要素は遅延読み込みの例です</p>
+            <div class="image-placeholder" data-src="https://picsum.photos/400/300?random=1">
+                <span>画像を読み込み中...</span>
+            </div>
+        </section>
+
+        <section class="spacer"></section>
+
+        <section class="observed-section" data-id="section-5">
+            <h2>セクション 5</h2>
+            <p>最後のセクションです</p>
+        </section>
+
+        <section class="spacer"></section>
+    </main>
+
+    <div id="status-panel">
+        <h3>監視状況</h3>
+        <ul id="status-list"></ul>
+    </div>
+
+    <script src="dist/main.js"></script>
+</body>
+</html>
