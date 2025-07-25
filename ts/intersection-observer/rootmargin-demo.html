@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rootMargin デモ</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .spacer {
+            height: 150vh;
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .target-box {
+            width: 300px;
+            height: 200px;
+            background: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+        }
+        
+        .target-box.detected {
+            background: #2ecc71;
+            transform: scale(1.1);
+        }
+        
+        .info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 300px;
+        }
+        
+        .info h3 {
+            margin-top: 0;
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .margin-indicator {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e74c3c;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .margin-indicator.top {
+            top: 200px;
+        }
+        
+        .margin-indicator.bottom {
+            bottom: 200px;
+        }
+        
+        .margin-label {
+            position: absolute;
+            right: 10px;
+            top: -20px;
+            background: #e74c3c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>rootMargin デモ：先読みトリガーの実演</h1>
+        
+        <p>この赤い線が rootMargin: '200px' の境界線です。要素がこの線を越えると検知されます。</p>
+        
+        <div class="spacer">
+            <h2>↓ スクロールしてください ↓</h2>
+        </div>
+        
+        <div class="target-box" id="box1">
+            通常の検知<br>
+            (rootMargin: '0px')
+        </div>
+        
+        <div class="spacer">
+            <h2>さらにスクロール</h2>
+        </div>
+        
+        <div class="target-box" id="box2">
+            先読み検知<br>
+            (rootMargin: '200px')
+        </div>
+        
+        <div class="spacer">
+            <h2>もっとスクロール</h2>
+        </div>
+        
+        <div class="target-box" id="box3">
+            大きな先読み<br>
+            (rootMargin: '50%')
+        </div>
+        
+        <div class="spacer">
+            <h2>最後までスクロール</h2>
+        </div>
+    </div>
+    
+    <div class="info">
+        <h3>検知状態</h3>
+        <div id="status1" class="status inactive">
+            通常の検知: 未検知
+        </div>
+        <div id="status2" class="status inactive">
+            先読み検知 (200px): 未検知
+        </div>
+        <div id="status3" class="status inactive">
+            先読み検知 (50%): 未検知
+        </div>
+    </div>
+    
+    <!-- rootMarginの境界線を表示 -->
+    <div class="margin-indicator top">
+        <div class="margin-label">rootMargin: 200px の境界</div>
+    </div>
+    <div class="margin-indicator bottom">
+        <div class="margin-label">rootMargin: 200px の境界</div>
+    </div>
+    
+    <script>
+        // 通常の検知（rootMargin なし）
+        const observer1 = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const status = document.getElementById('status1');
+                const box = document.getElementById('box1');
+                
+                if (entry.isIntersecting) {
+                    status.textContent = '通常の検知: 画面内に入りました！';
+                    status.className = 'status active';
+                    box.classList.add('detected');
+                } else {
+                    status.textContent = '通常の検知: 未検知';
+                    status.className = 'status inactive';
+                    box.classList.remove('detected');
+                }
+            });
+        });
+        
+        // 200px の先読み
+        const observer2 = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const status = document.getElementById('status2');
+                const box = document.getElementById('box2');
+                
+                if (entry.isIntersecting) {
+                    status.textContent = '先読み検知 (200px): 200px手前で検知！';
+                    status.className = 'status active';
+                    box.classList.add('detected');
+                    box.textContent = '200px手前で検知されました！';
+                } else {
+                    status.textContent = '先読み検知 (200px): 未検知';
+                    status.className = 'status inactive';
+                    box.classList.remove('detected');
+                    box.innerHTML = '先読み検知<br>(rootMargin: \'200px\')';
+                }
+            });
+        }, {
+            rootMargin: '200px'
+        });
+        
+        // 画面の50%の先読み
+        const observer3 = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const status = document.getElementById('status3');
+                const box = document.getElementById('box3');
+                
+                if (entry.isIntersecting) {
+                    status.textContent = '先読み検知 (50%): 画面の半分手前で検知！';
+                    status.className = 'status active';
+                    box.classList.add('detected');
+                    box.textContent = '画面の50%手前で検知されました！';
+                } else {
+                    status.textContent = '先読み検知 (50%): 未検知';
+                    status.className = 'status inactive';
+                    box.classList.remove('detected');
+                    box.innerHTML = '大きな先読み<br>(rootMargin: \'50%\')';
+                }
+            });
+        }, {
+            rootMargin: '50%'
+        });
+        
+        // 監視開始
+        observer1.observe(document.getElementById('box1'));
+        observer2.observe(document.getElementById('box2'));
+        observer3.observe(document.getElementById('box3'));
+        
+        // デバッグ情報の追加
+        console.log('rootMargin デモが開始されました');
+        console.log('赤い線が rootMargin の境界を示しています');
+    </script>
+</body>
+</html>
