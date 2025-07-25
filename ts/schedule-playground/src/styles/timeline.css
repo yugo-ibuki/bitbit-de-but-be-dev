@@ -1,0 +1,921 @@
+/* ===================================
+   Timeline Responsive Design Styles
+   ================================== */
+
+/* Base Timeline Container */
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 600px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* Timeline Header */
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+
+.header-navigation {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-view-switcher {
+  flex-shrink: 0;
+  margin-left: 24px;
+}
+
+/* Timeline Content */
+.timeline-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===================================
+   Month View Responsive Styles
+   ================================== */
+
+.month-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.month-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.month-header-day {
+  padding: 12px 8px;
+  text-align: center;
+  font-weight: 600;
+  color: #5f6368;
+  font-size: 14px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.month-header-day:last-child {
+  border-right: none;
+}
+
+.month-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  min-height: 500px;
+}
+
+.month-day {
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.month-day:last-child {
+  border-right: none;
+}
+
+.month-day:hover {
+  background-color: #f8f9fa;
+}
+
+.month-day.other-month {
+  color: #9aa0a6;
+  background-color: #fafafa;
+}
+
+.month-day.today {
+  background-color: #e8f0fe;
+}
+
+.month-day.selected {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.month-day-number {
+  font-weight: 500;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.month-events {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: calc(100% - 24px);
+  overflow: hidden;
+}
+
+.month-event {
+  background: #1a73e8;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.2s ease;
+}
+
+.month-event:hover {
+  background: #1557b0;
+}
+
+.month-more-events {
+  font-size: 10px;
+  color: #5f6368;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+/* ===================================
+   Week View Responsive Styles
+   ================================== */
+
+.week-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.week-header {
+  display: grid;
+  grid-template-columns: 60px repeat(7, 1fr);
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  flex-shrink: 0;
+}
+
+.week-time-header {
+  border-right: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+.week-day-header {
+  padding: 12px 8px;
+  text-align: center;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.week-day-header:last-child {
+  border-right: none;
+}
+
+.week-day-name {
+  font-size: 12px;
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.week-day-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: #202124;
+}
+
+.week-day-header.today .week-day-number {
+  background: #1a73e8;
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.week-content {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: 60px repeat(7, 1fr);
+  min-height: 1440px; /* 24 hours * 60px */
+}
+
+.week-time-column {
+  border-right: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+.week-time-slot {
+  height: 60px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  font-size: 12px;
+  color: #5f6368;
+}
+
+.week-day-column {
+  border-right: 1px solid #e0e0e0;
+  position: relative;
+  cursor: crosshair;
+}
+
+.week-day-column:last-child {
+  border-right: none;
+}
+
+.week-hour-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e0e0e0;
+  pointer-events: none;
+}
+
+.week-half-hour-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #f0f0f0;
+  pointer-events: none;
+}
+
+/* ===================================
+   Day View Responsive Styles
+   ================================== */
+
+.day-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.day-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.day-date {
+  font-size: 18px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 4px;
+}
+
+.day-weekday {
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.day-content {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}
+
+.day-grid {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  min-height: 1440px; /* 24 hours * 60px */
+}
+
+.day-time-column {
+  border-right: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+.day-time-slot {
+  height: 60px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  font-size: 12px;
+  color: #5f6368;
+}
+
+.day-main-column {
+  position: relative;
+  cursor: crosshair;
+}
+
+.day-quarter-hour-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #f5f5f5;
+  pointer-events: none;
+}
+
+.day-hour-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e0e0e0;
+  pointer-events: none;
+}
+
+/* ===================================
+   Event Styles (Common)
+   ================================== */
+
+.timeline-event {
+  position: absolute;
+  background: #1a73e8;
+  color: white;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.3;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.timeline-event:hover {
+  background: #1557b0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+}
+
+.timeline-event.selected {
+  background: #ea4335;
+  box-shadow: 0 2px 8px rgba(234, 67, 53, 0.4);
+  z-index: 30;
+}
+
+.event-title {
+  font-weight: 500;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-time {
+  font-size: 10px;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===================================
+   Drag Selection Styles
+   ================================== */
+
+.drag-selection {
+  position: absolute;
+  background: rgba(26, 115, 232, 0.2);
+  border: 2px solid #1a73e8;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.drag-time-indicator {
+  position: absolute;
+  background: #1a73e8;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 101;
+  white-space: nowrap;
+}
+
+/* ===================================
+   Tablet Responsive Styles (768px - 1024px)
+   ================================== */
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .timeline-container {
+    border-radius: 8px;
+    min-height: 500px;
+  }
+
+  .timeline-header {
+    padding: 16px 20px;
+  }
+
+  .header-view-switcher {
+    margin-left: 20px;
+  }
+
+  /* Month View Tablet */
+  .month-grid {
+    min-height: 450px;
+  }
+
+  .month-day {
+    padding: 6px;
+  }
+
+  .month-day-number {
+    font-size: 13px;
+  }
+
+  .month-event {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+
+  /* Week View Tablet */
+  .week-header {
+    grid-template-columns: 50px repeat(7, 1fr);
+  }
+
+  .week-grid {
+    grid-template-columns: 50px repeat(7, 1fr);
+  }
+
+  .week-day-header {
+    padding: 10px 6px;
+  }
+
+  .week-day-number {
+    font-size: 16px;
+  }
+
+  /* Day View Tablet */
+  .day-grid {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .day-time-slot {
+    height: 50px;
+  }
+
+  .timeline-event {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+}
+
+/* ===================================
+   Mobile Responsive Styles (≤768px)
+   ================================== */
+
+@media (max-width: 768px) {
+  .timeline-container {
+    border-radius: 4px;
+    min-height: calc(100vh - 200px);
+  }
+
+  .timeline-header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px 16px;
+    align-items: stretch;
+  }
+
+  .header-navigation {
+    margin: 0;
+  }
+
+  .header-view-switcher {
+    margin: 0;
+    align-self: center;
+  }
+
+  /* Month View Mobile */
+  .month-header-day {
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+
+  .month-grid {
+    min-height: 400px;
+    grid-template-rows: repeat(6, minmax(60px, 1fr));
+  }
+
+  .month-day {
+    padding: 4px;
+    min-height: 60px;
+  }
+
+  .month-day-number {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .month-events {
+    gap: 1px;
+    max-height: calc(100% - 16px);
+  }
+
+  .month-event {
+    font-size: 9px;
+    padding: 1px 3px;
+    border-radius: 2px;
+  }
+
+  .month-more-events {
+    font-size: 8px;
+  }
+
+  /* Week View Mobile - Vertical Layout */
+  .week-view {
+    overflow-x: auto;
+  }
+
+  .week-header {
+    grid-template-columns: 40px repeat(7, minmax(80px, 1fr));
+    min-width: 600px;
+  }
+
+  .week-grid {
+    grid-template-columns: 40px repeat(7, minmax(80px, 1fr));
+    min-width: 600px;
+    min-height: 1200px;
+  }
+
+  .week-day-header {
+    padding: 8px 4px;
+    min-width: 80px;
+  }
+
+  .week-day-name {
+    font-size: 10px;
+  }
+
+  .week-day-number {
+    font-size: 14px;
+  }
+
+  .week-day-header.today .week-day-number {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .week-time-slot {
+    height: 50px;
+    font-size: 10px;
+  }
+
+  /* Day View Mobile */
+  .day-header {
+    padding: 12px 16px;
+  }
+
+  .day-date {
+    font-size: 16px;
+  }
+
+  .day-weekday {
+    font-size: 12px;
+  }
+
+  .day-grid {
+    grid-template-columns: 60px 1fr;
+    min-height: 1200px;
+  }
+
+  .day-time-slot {
+    height: 50px;
+    font-size: 10px;
+  }
+
+  /* Event Styles Mobile */
+  .timeline-event {
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    min-height: 20px;
+  }
+
+  .event-title {
+    font-size: 10px;
+    margin-bottom: 1px;
+  }
+
+  .event-time {
+    font-size: 8px;
+  }
+
+  /* Drag Selection Mobile */
+  .drag-time-indicator {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+/* ===================================
+   Small Mobile Responsive Styles (≤480px)
+   ================================== */
+
+@media (max-width: 480px) {
+  .timeline-container {
+    border-radius: 0;
+    min-height: calc(100vh - 160px);
+  }
+
+  .timeline-header {
+    padding: 8px 12px;
+    gap: 12px;
+  }
+
+  /* Month View Small Mobile */
+  .month-header-day {
+    padding: 6px 2px;
+    font-size: 10px;
+  }
+
+  .month-grid {
+    min-height: 350px;
+    grid-template-rows: repeat(6, minmax(50px, 1fr));
+  }
+
+  .month-day {
+    padding: 2px;
+    min-height: 50px;
+  }
+
+  .month-day-number {
+    font-size: 11px;
+  }
+
+  .month-event {
+    font-size: 8px;
+    padding: 1px 2px;
+  }
+
+  /* Week View Small Mobile */
+  .week-header {
+    grid-template-columns: 35px repeat(7, minmax(70px, 1fr));
+    min-width: 525px;
+  }
+
+  .week-grid {
+    grid-template-columns: 35px repeat(7, minmax(70px, 1fr));
+    min-width: 525px;
+    min-height: 1000px;
+  }
+
+  .week-day-header {
+    padding: 6px 2px;
+    min-width: 70px;
+  }
+
+  .week-day-name {
+    font-size: 9px;
+  }
+
+  .week-day-number {
+    font-size: 12px;
+  }
+
+  .week-day-header.today .week-day-number {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .week-time-slot {
+    height: 42px;
+    font-size: 9px;
+  }
+
+  /* Day View Small Mobile */
+  .day-header {
+    padding: 8px 12px;
+  }
+
+  .day-date {
+    font-size: 14px;
+  }
+
+  .day-grid {
+    grid-template-columns: 50px 1fr;
+    min-height: 1000px;
+  }
+
+  .day-time-slot {
+    height: 42px;
+    font-size: 9px;
+  }
+
+  /* Event Styles Small Mobile */
+  .timeline-event {
+    font-size: 9px;
+    padding: 1px 3px;
+    min-height: 18px;
+  }
+
+  .event-title {
+    font-size: 9px;
+  }
+
+  .event-time {
+    font-size: 7px;
+  }
+}
+
+/* ===================================
+   Touch Device Optimizations
+   ================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch targets */
+  .month-day {
+    min-height: 60px;
+  }
+
+  .timeline-event {
+    min-height: 32px;
+    padding: 6px 8px;
+  }
+
+  .week-day-column,
+  .day-main-column {
+    cursor: default;
+  }
+
+  /* Remove hover effects on touch devices */
+  .month-day:hover,
+  .timeline-event:hover {
+    background-color: inherit;
+    box-shadow: inherit;
+  }
+
+  /* Add active states for touch feedback */
+  .month-day:active {
+    background-color: #f0f0f0;
+  }
+
+  .timeline-event:active {
+    transform: scale(0.98);
+    background-color: #1557b0;
+  }
+
+  /* Improve drag selection for touch */
+  .drag-selection {
+    border-width: 3px;
+  }
+
+  .drag-time-indicator {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
+
+/* ===================================
+   Landscape Mobile Optimizations
+   ================================== */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .timeline-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 16px;
+  }
+
+  .header-navigation {
+    flex: 1;
+  }
+
+  .header-view-switcher {
+    margin-left: 16px;
+  }
+
+  /* Optimize month view for landscape */
+  .month-grid {
+    min-height: 300px;
+  }
+
+  /* Optimize week view for landscape */
+  .week-grid {
+    min-height: 800px;
+  }
+
+  .week-time-slot {
+    height: 33px;
+  }
+
+  /* Optimize day view for landscape */
+  .day-grid {
+    min-height: 800px;
+  }
+
+  .day-time-slot {
+    height: 33px;
+  }
+}
+
+/* ===================================
+   High DPI Display Optimizations
+   ================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .timeline-event {
+    box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.2);
+  }
+
+  .timeline-event:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .month-day,
+  .week-day-column,
+  .day-main-column {
+    border-width: 0.5px;
+  }
+}
+
+/* ===================================
+   Accessibility Improvements
+   ================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-event,
+  .month-day,
+  .drag-selection {
+    transition: none;
+  }
+
+  .timeline-event:active {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .timeline-event {
+    border: 2px solid #000;
+  }
+
+  .month-day.today {
+    border: 2px solid #1a73e8;
+  }
+
+  .drag-selection {
+    border-width: 3px;
+  }
+}
+
+/* ===================================
+   Print Styles
+   ================================== */
+
+@media print {
+  .timeline-container {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+
+  .timeline-header {
+    background: white !important;
+    border-bottom: 2px solid #000;
+  }
+
+  .timeline-event {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #000;
+  }
+
+  .drag-selection,
+  .drag-time-indicator {
+    display: none;
+  }
+}

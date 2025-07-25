@@ -1,0 +1,132 @@
+.error-message {
+  position: relative;
+  margin: 12px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.error-message__content {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 12px;
+}
+
+.error-message__icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.error-message__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-message__title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.error-message__message {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.error-message__close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.error-message__close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Type-specific styles */
+.error-message--error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.error-message--error .error-message__close:hover {
+  background: rgba(153, 27, 27, 0.1);
+}
+
+.error-message--warning {
+  background: #fffbeb;
+  border: 1px solid #fed7aa;
+  color: #92400e;
+}
+
+.error-message--warning .error-message__close:hover {
+  background: rgba(146, 64, 14, 0.1);
+}
+
+.error-message--info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+.error-message--info .error-message__close:hover {
+  background: rgba(30, 64, 175, 0.1);
+}
+
+.error-message--success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.error-message--success .error-message__close:hover {
+  background: rgba(22, 101, 52, 0.1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .error-message {
+    margin: 8px 0;
+  }
+
+  .error-message__content {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .error-message__icon {
+    font-size: 18px;
+  }
+
+  .error-message__title,
+  .error-message__message {
+    font-size: 13px;
+  }
+}
