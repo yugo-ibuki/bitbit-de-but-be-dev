@@ -36,11 +36,16 @@ src/
 
 ### 1. ElasticSearchの起動
 
+**重要:** ディスク容量が不足している場合は、[Elastic Cloud](https://cloud.elastic.co/)の無料トライアルを利用することを強く推奨します。
+
 ElasticSearchをDockerで起動する場合：
 
 ```bash
 # Docker Composeを使用（推奨）
 docker-compose up -d
+
+# または軽量版（ディスク容量不足の場合）
+docker-compose -f docker-compose.simple.yml up -d
 
 # または個別のコンテナで起動
 docker run -d \
@@ -49,7 +54,7 @@ docker run -d \
   -p 9300:9300 \
   -e "discovery.type=single-node" \
   -e "xpack.security.enabled=false" \
-  elasticsearch:8.11.0
+  elasticsearch:7.17.16
 ```
 
 ### 2. 依存関係のインストール
@@ -61,6 +66,10 @@ npm install
 ### 3. 環境変数の設定（オプション）
 
 ```bash
+# .envファイルを作成
+cp .env.example .env
+
+# または直接環境変数を設定
 export ELASTICSEARCH_URL="http://localhost:9200"
 export ELASTICSEARCH_USERNAME="elastic"
 export ELASTICSEARCH_PASSWORD="changeme"
@@ -272,11 +281,41 @@ const body = articles.flatMap(article => [
 await client.bulk({ body });
 ```
 
+## 🚨 トラブルシューティング
+
+### ディスク容量不足エラー
+
+**エラー**: `No space left on device`
+
+**解決方法**:
+1. **Elastic Cloud を使用（推奨）**:
+   - [Elastic Cloud](https://cloud.elastic.co/) で無料トライアルを開始
+   - 環境変数を設定
+
+2. **ローカルのディスク容量を確保**:
+   ```bash
+   # 不要なDockerイメージの削除
+   docker system prune -f
+
+   # ディスク使用量の確認
+   df -h
+   ```
+
+3. **外部のElasticSearchサーバーを使用**
+
+### 接続エラー
+
+**解決方法**:
+- ElasticSearchサーバーの起動確認
+- ポート設定の確認
+- 認証情報の確認
+
 ## 📚 参考リンク
 
 ### 公式ドキュメント
 - [Elasticsearch Official Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
 - [Elasticsearch JavaScript Client](https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/index.html)
+- [Elastic Cloud](https://cloud.elastic.co/)
 
 ### 学習リソース
 - [Elasticsearch の基本概念](https://qiita.com/nskydiving/items/1c2dc4e0b9c98d164329)
@@ -303,23 +342,6 @@ await client.bulk({ body });
 - 検索レスポンス時間の監視
 - インデックスサイズの監視
 - クラスターヘルスの確認
-
-## 🐛 トラブルシューティング
-
-### 接続エラー
-- ElasticSearchサーバーの起動確認
-- ポート番号の確認（デフォルト: 9200）
-- 認証情報の確認
-
-### 検索結果が期待と異なる
-- マッピングの確認
-- アナライザーの設定確認
-- クエリのデバッグ
-
-### パフォーマンス問題
-- インデックスの再構築
-- クエリの最適化
-- ハードウェアリソースの確認
 
 ## 🔄 次のステップ
 

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.16
+    container_name: elasticsearch-learning
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
+      - cluster.routing.allocation.disk.threshold_enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - elasticsearch_network
+
+networks:
+  elasticsearch_network:
+    driver: bridge

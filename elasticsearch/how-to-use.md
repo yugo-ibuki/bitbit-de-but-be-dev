@@ -26,6 +26,24 @@ curl http://localhost:9200
 # http://localhost:5601
 ```
 
+**⚠️ ディスク容量不足の場合:**
+ディスク容量が不足している場合は、以下のいずれかの方法を使用してください：
+
+1. **Elastic Cloudを使用（推奨）:**
+   - [Elastic Cloud](https://cloud.elastic.co/)で無料トライアルを開始
+   - 環境変数を設定：
+   ```bash
+   export ELASTICSEARCH_URL="https://your-deployment.es.region.aws.found.io:9243"
+   export ELASTICSEARCH_USERNAME="elastic"
+   export ELASTICSEARCH_PASSWORD="your-password"
+   ```
+
+2. **より軽量な設定でローカル実行:**
+   ```bash
+   # 軽量版のDocker Composeを使用
+   docker-compose -f docker-compose.simple.yml up -d
+   ```
+
 #### 個別のDockerコンテナを使用する場合
 
 ```bash
