@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Origin iframe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #e8f5e9;
+            margin: 0;
+        }
+        h2 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+        .info {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #4caf50;
+        }
+        .cookie-display {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #4caf50;
+        }
+        .cookie-item {
+            font-family: monospace;
+            margin: 5px 0;
+            padding: 8px;
+            background-color: #c8e6c9;
+            border-radius: 3px;
+            word-break: break-all;
+        }
+        .no-cookie {
+            color: #d32f2f;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #ffebee;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #388e3c;
+        }
+        .label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .status.success {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+        .status.error {
+            background-color: #ffcdd2;
+            color: #c62828;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <h2>🌐 Cross-Origin iframe</h2>
+
+    <div class="info">
+        <strong>このページについて:</strong><br>
+        このページは異なるオリジン（ポート9473）から読み込まれています。<br>
+        親ページ（ポート9472）とは<strong>cross-origin</strong>の関係です。
+    </div>
+
+    <div class="warning">
+        ⚠️ <strong>重要:</strong> Cross-origin環境では、親ページのCookieにはアクセスできません。<br>
+        このページは自分自身のオリジン（localhost:9473）のCookieのみアクセス可能です。
+    </div>
+
+    <div>
+        <button onclick="loadCookies()">このオリジンのCookieを再読み込み</button>
+        <button onclick="setCrossOriginCookie()">このオリジン用のCookieを設定</button>
+        <button onclick="tryAccessParentCookie()">親ページのCookieアクセスを試行</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div class="cookie-display">
+        <div class="label">このオリジン（localhost:9473）のCookie:</div>
+        <div id="cookieList"></div>
+    </div>
+
+    <div class="cookie-display">
+        <div class="label">検証情報:</div>
+        <div id="verificationInfo"></div>
+    </div>
+
+    <div class="cookie-display">
+        <div class="label">親ページとの通信テスト:</div>
+        <div id="communicationTest"></div>
+    </div>
+
+    <script src="/iframe-cross-origin.js"></script>
+</body>
+</html>
