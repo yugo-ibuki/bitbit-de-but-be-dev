@@ -4,7 +4,11 @@
   "scripts": {
     "dev": "tsx watch index.ts",
     "build": "tsc",
-    "start": "bun dist/index.js"
+    "start": "bun dist/index.js",
+    "tf:init": "terraform init",
+    "tf:plan": "terraform plan",
+    "tf:apply": "terraform apply",
+    "tf:destroy": "terraform destroy"
   },
   "dependencies": {
     "fastify": "^5.0.0",

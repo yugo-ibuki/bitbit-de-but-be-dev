@@ -43,10 +43,19 @@ gcloud builds submit \
 
 ### 3. Terraform でインフラ構築
 
+`.env` ファイルを作成し、プロジェクトIDを設定します。
+
 ```fish
-terraform init
-terraform plan
-terraform apply
+cp .env.example .env
+# .env を編集して TF_VAR_project_id を設定してください
+```
+
+Terraform コマンドを実行（Bun経由で実行することで .env が読み込まれます）：
+
+```fish
+bun run tf:init
+bun run tf:plan
+bun run tf:apply
 ```
 
 ## 動作確認
