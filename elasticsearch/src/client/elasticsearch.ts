@@ -14,7 +14,7 @@ export class ElasticSearchClient {
     try {
       const response = await this.client.ping();
       console.log('✅ ElasticSearch接続成功');
-      return response.body;
+      return true;
     } catch (error) {
       console.error('❌ ElasticSearch接続失敗:', error);
       return false;
@@ -27,17 +27,15 @@ export class ElasticSearchClient {
         index: this.indexName
       });
 
-      if (exists.body) {
+      if (exists) {
         console.log(`📋 インデックス '${this.indexName}' は既に存在します`);
         return;
       }
 
       await this.client.indices.create({
         index: this.indexName,
-        body: {
-          settings: indexSettings.settings,
-          mappings: indexSettings.mappings
-        }
+        settings: indexSettings.settings,
+        mappings: indexSettings.mappings
       });
 
       console.log(`✨ インデックス '${this.indexName}' を作成しました`);
@@ -53,7 +51,7 @@ export class ElasticSearchClient {
         index: this.indexName
       });
 
-      if (!exists.body) {
+      if (!exists) {
         console.log(`📋 インデックス '${this.indexName}' は存在しません`);
         return;
       }
@@ -74,7 +72,7 @@ export class ElasticSearchClient {
       const response = await this.client.indices.get({
         index: this.indexName
       });
-      return response.body;
+      return response;
     } catch (error) {
       console.error('❌ インデックス情報取得エラー:', error);
       throw error;
