@@ -1,0 +1,23 @@
+# Environment variables
+.env
+
+# Generated schema files (from inspect commands)
+schema/schema-generated.sql
+schema/schema-generated.hcl
+
+# Migration files (optional - remove if you want to version control migrations)
+# migrations/
+# migrations-hcl/
+
+# Atlas cache
+.atlas/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
