@@ -1,0 +1,42 @@
+{
+  "name": "atlas-spanner-poc",
+  "version": "1.0.0",
+  "description": "Atlas schema management for Google Cloud Spanner PoC",
+  "scripts": {
+    "setup": "bash scripts/setup.sh",
+    "inspect": "atlas schema inspect --env dev",
+    "inspect:sql": "atlas schema inspect --env dev > schema/schema-generated.sql && echo 'Generated: schema/schema-generated.sql'",
+    "inspect:hcl": "atlas schema inspect --env dev --format '{{ hcl . }}' > schema/schema-generated.hcl && echo 'Generated: schema/schema-generated.hcl'",
+    "sql:diff": "echo '📝 Using SQL schema...' && atlas schema diff --env dev --to file://schema/schema.sql",
+    "sql:apply": "echo '📝 Applying SQL schema...' && atlas schema apply --env dev --to file://schema/schema.sql --auto-approve",
+    "sql:apply:check": "echo '📝 Applying SQL schema...' && atlas schema apply --env dev --to file://schema/schema.sql",
+    "sql:validate": "atlas schema validate --env dev",
+    "sql:lint": "atlas schema lint --env dev",
+    "hcl:diff": "echo '🔷 Using HCL schema...' && atlas schema diff --env dev-hcl --to file://schema/schema.hcl --config atlas-hcl.hcl",
+    "hcl:apply": "echo '🔷 Applying HCL schema...' && atlas schema apply --env dev-hcl --to file://schema/schema.hcl --config atlas-hcl.hcl --auto-approve",
+    "hcl:apply:check": "echo '🔷 Applying HCL schema...' && atlas schema apply --env dev-hcl --to file://schema/schema.hcl --config atlas-hcl.hcl",
+    "hcl:validate": "atlas schema validate --env dev-hcl --config atlas-hcl.hcl",
+    "diff": "npm run sql:diff",
+    "apply": "npm run sql:apply",
+    "apply:check": "npm run sql:apply:check",
+    "migrate:new": "atlas migrate diff --env dev",
+    "migrate:status": "atlas migrate status --env dev",
+    "migrate:apply": "atlas migrate apply --env dev --auto-approve",
+    "migrate:apply:check": "atlas migrate apply --env dev",
+    "migrate:down": "atlas migrate down --env dev",
+    "clean": "rm -rf migrations/*.sql migrations-hcl/*.sql",
+    "help": "bash scripts/help.sh"
+  },
+  "keywords": [
+    "atlas",
+    "spanner",
+    "schema",
+    "migration",
+    "gcp"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
