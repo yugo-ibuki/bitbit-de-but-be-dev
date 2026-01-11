@@ -1,0 +1,4 @@
+packages: .
+
+-- Use a recent stable resolver
+-- You can update this to a newer version as needed
