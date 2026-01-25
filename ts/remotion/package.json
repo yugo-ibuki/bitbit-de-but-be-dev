@@ -9,6 +9,8 @@
     "render:advanced": "remotion render AdvancedDemo out/advanced.mp4",
     "render:starwars": "remotion render DotClaudeSync out/dot-claude-sync.mp4",
     "render:git": "remotion render GitTutorial out/git-tutorial.mp4",
+    "render:useeffect": "remotion render UseEffectTutorial out/useeffect-tutorial.mp4",
+    "render:useeffect-interactive": "remotion render UseEffectInteractive out/useeffect-interactive.mp4",
     "build": "remotion bundle"
   },
   "dependencies": {

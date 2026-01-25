@@ -3,6 +3,8 @@ import { HelloWorld } from "./HelloWorld";
 import { AdvancedVideo } from "./AdvancedVideo";
 import { StarWarsIntro } from "./StarWarsIntro";
 import { GitTutorial } from "./GitTutorial";
+import { UseEffectTutorial } from "./UseEffectTutorial";
+import { UseEffectInteractive } from "./UseEffectInteractive";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -46,6 +48,26 @@ export const RemotionRoot: React.FC = () => {
         id="GitTutorial"
         component={GitTutorial}
         durationInFrames={1100}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      {/* React useEffect 解説 */}
+      <Composition
+        id="UseEffectTutorial"
+        component={UseEffectTutorial}
+        durationInFrames={1200}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      {/* useEffect インタラクティブ（2カラム） */}
+      <Composition
+        id="UseEffectInteractive"
+        component={UseEffectInteractive}
+        durationInFrames={1770}
         fps={30}
         width={1920}
         height={1080}
