@@ -13,11 +13,11 @@ export class ArticleService {
       const response = await this.esClient.getClient().index({
         index: this.esClient.getIndexName(),
         id: article.id,
-        body: article
+        document: article
       });
 
       console.log(`✅ 記事を作成しました: ${article.title} (ID: ${article.id})`);
-      console.log(`📊 結果: ${response.body.result}`);
+      console.log(`📊 結果: ${response.result}`);
     } catch (error) {
       console.error('❌ 記事作成エラー:', error);
       throw error;
@@ -32,7 +32,7 @@ export class ArticleService {
       });
 
       console.log(`📖 記事を取得しました: ID ${id}`);
-      return response.body._source as Article;
+      return response._source as Article;
     } catch (error: any) {
       if (error.meta?.statusCode === 404) {
         console.log(`📭 記事が見つかりません: ID ${id}`);
@@ -50,13 +50,11 @@ export class ArticleService {
       const response = await this.esClient.getClient().update({
         index: this.esClient.getIndexName(),
         id: id,
-        body: {
-          doc: updates
-        }
+        doc: updates
       });
 
       console.log(`✏️  記事を更新しました: ID ${id}`);
-      console.log(`📊 結果: ${response.body.result}`);
+      console.log(`📊 結果: ${response.result}`);
     } catch (error) {
       console.error('❌ 記事更新エラー:', error);
       throw error;
@@ -71,7 +69,7 @@ export class ArticleService {
       });
 
       console.log(`🗑️  記事を削除しました: ID ${id}`);
-      console.log(`📊 結果: ${response.body.result}`);
+      console.log(`📊 結果: ${response.result}`);
     } catch (error: any) {
       if (error.meta?.statusCode === 404) {
         console.log(`📭 削除対象の記事が見つかりません: ID ${id}`);
@@ -86,20 +84,18 @@ export class ArticleService {
     try {
       const response = await this.esClient.getClient().search({
         index: this.esClient.getIndexName(),
-        body: {
-          query: {
-            match_all: {}
-          },
-          sort: [
-            { created_at: { order: 'desc' } }
-          ],
-          from: from,
-          size: size
-        }
+        query: {
+          match_all: {}
+        },
+        sort: [
+          { created_at: { order: 'desc' } }
+        ],
+        from: from,
+        size: size
       });
 
       console.log(`📚 全記事を取得しました (${from}-${from + size})`);
-      return response.body as SearchResult<Article>;
+      return response as SearchResult<Article>;
     } catch (error) {
       console.error('❌ 全記事取得エラー:', error);
       throw error;
@@ -108,14 +104,14 @@ export class ArticleService {
 
   async bulkCreateArticles(articles: Article[]): Promise<void> {
     try {
-      const body = articles.flatMap(article => [
+      const operations = articles.flatMap(article => [
         { index: { _index: this.esClient.getIndexName(), _id: article.id } },
         article
       ]);
 
-      const response = await this.esClient.getClient().bulk({ body });
+      const response = await this.esClient.getClient().bulk({ operations });
 
-      const errors = response.body.items.filter((item: any) =>
+      const errors = response.items.filter((item: any) =>
         item.index && item.index.error
       );
 
@@ -124,7 +120,7 @@ export class ArticleService {
       }
 
       console.log(`🚀 ${articles.length}件の記事を一括作成しました`);
-      console.log(`⏱️  処理時間: ${response.body.took}ms`);
+      console.log(`⏱️  処理時間: ${response.took}ms`);
     } catch (error) {
       console.error('❌ 記事一括作成エラー:', error);
       throw error;

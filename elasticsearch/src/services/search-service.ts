@@ -14,25 +14,24 @@ export class SearchService {
 
       const response = await this.esClient.getClient().search({
         index: this.esClient.getIndexName(),
-        body: {
-          query: query,
-          sort: [
-            { _score: { order: 'desc' } },
-            { created_at: { order: 'desc' } }
-          ],
-          from: searchQuery.from || 0,
-          size: searchQuery.size || 10,
-          highlight: {
-            fields: {
-              title: {},
-              content: {}
-            }
+        query: query,
+        sort: [
+          { _score: { order: 'desc' } },
+          { created_at: { order: 'desc' } }
+        ],
+        from: searchQuery.from || 0,
+        size: searchQuery.size || 10,
+        highlight: {
+          fields: {
+            title: {},
+            content: {}
           }
         }
       });
 
-      console.log(`🔍 検索完了: ${response.body.hits.total.value}件のヒット`);
-      return response.body as SearchResult<Article>;
+      const totalHits = typeof response.hits.total === 'number' ? response.hits.total : response.hits.total?.value || 0;
+      console.log(`🔍 検索完了: ${totalHits}件のヒット`);
+      return response as SearchResult<Article>;
     } catch (error) {
       console.error('❌ 検索エラー:', error);
       throw error;
@@ -43,25 +42,24 @@ export class SearchService {
     try {
       const response = await this.esClient.getClient().search({
         index: this.esClient.getIndexName(),
-        body: {
-          query: {
-            fuzzy: {
-              [field]: {
-                value: text,
-                fuzziness: 'AUTO'
-              }
+        query: {
+          fuzzy: {
+            [field]: {
+              value: text,
+              fuzziness: 'AUTO'
             }
-          },
-          highlight: {
-            fields: {
-              [field]: {}
-            }
+          }
+        },
+        highlight: {
+          fields: {
+            [field]: {}
           }
         }
       });
 
-      console.log(`🔍 あいまい検索完了: ${response.body.hits.total.value}件のヒット`);
-      return response.body as SearchResult<Article>;
+      const totalHits = typeof response.hits.total === 'number' ? response.hits.total : response.hits.total?.value || 0;
+      console.log(`🔍 あいまい検索完了: ${totalHits}件のヒット`);
+      return response as SearchResult<Article>;
     } catch (error) {
       console.error('❌ あいまい検索エラー:', error);
       throw error;
@@ -72,21 +70,19 @@ export class SearchService {
     try {
       const response = await this.esClient.getClient().search({
         index: this.esClient.getIndexName(),
-        body: {
-          size: 0,
-          aggs: {
-            categories: {
-              terms: {
-                field: 'category',
-                size: 10
-              }
+        size: 0,
+        aggs: {
+          categories: {
+            terms: {
+              field: 'category',
+              size: 10
             }
           }
         }
       });
 
       console.log('📊 カテゴリ別集計完了');
-      return response.body.aggregations;
+      return response.aggregations;
     } catch (error) {
       console.error('❌ 集計エラー:', error);
       throw error;
@@ -97,19 +93,17 @@ export class SearchService {
     try {
       const response = await this.esClient.getClient().search({
         index: this.esClient.getIndexName(),
-        body: {
-          size: 0,
-          aggs: {
-            authors: {
-              terms: {
-                field: 'author',
-                size: 10
-              },
-              aggs: {
-                avg_views: {
-                  avg: {
-                    field: 'view_count'
-                  }
+        size: 0,
+        aggs: {
+          authors: {
+            terms: {
+              field: 'author',
+              size: 10
+            },
+            aggs: {
+              avg_views: {
+                avg: {
+                  field: 'view_count'
                 }
               }
             }
@@ -118,7 +112,7 @@ export class SearchService {
       });
 
       console.log('📊 著者別集計完了');
-      return response.body.aggregations;
+      return response.aggregations;
     } catch (error) {
       console.error('❌ 集計エラー:', error);
       throw error;
@@ -129,23 +123,21 @@ export class SearchService {
     try {
       const response = await this.esClient.getClient().search({
         index: this.esClient.getIndexName(),
-        body: {
-          query: {
-            bool: {
-              filter: {
-                term: { is_published: true }
-              }
+        query: {
+          bool: {
+            filter: {
+              term: { is_published: true }
             }
-          },
-          sort: [
-            { view_count: { order: 'desc' } }
-          ],
-          size: limit
-        }
+          }
+        },
+        sort: [
+          { view_count: { order: 'desc' } }
+        ],
+        size: limit
       });
 
       console.log(`🔥 人気記事を取得: ${limit}件`);
-      return response.body as SearchResult<Article>;
+      return response as SearchResult<Article>;
     } catch (error) {
       console.error('❌ 人気記事取得エラー:', error);
       throw error;
