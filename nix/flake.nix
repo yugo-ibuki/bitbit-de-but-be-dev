@@ -27,7 +27,7 @@
     in
     {
       packages = forAllSystems (
-        { pkgs }:
+        { pkgs, ... }:
         {
           default = pkgs.writeShellApplication {
             name = "nix-node-sample";
@@ -52,16 +52,18 @@
       );
 
       devShells = forAllSystems (
-        { pkgs }:
+        { pkgs, ... }:
         {
           default = pkgs.mkShell {
             packages = [
+              pkgs.go_1_26
               pkgs.nodejs_22
               pkgs.ripgrep
             ];
 
             shellHook = ''
               echo "Entered nix devShell"
+              echo "go:   $(go version)"
               echo "node: $(node --version)"
               echo "rg:   $(rg --version | head -n 1)"
             '';
