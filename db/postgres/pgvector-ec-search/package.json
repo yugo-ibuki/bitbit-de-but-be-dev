@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "PG Vector EC product search baseline with Drizzle and Hono",
   "type": "module",
+  "packageManager": "bun@1.3.6",
   "scripts": {
     "dev": "bun --watch src/server.ts",
     "start": "node dist/server.js",
