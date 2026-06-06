@@ -4,7 +4,7 @@
   "description": "PG Vector EC product search baseline with Drizzle and Hono",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "bun --watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
     "test": "vitest run",
