@@ -3,7 +3,7 @@
 :root {
   font-family: 'DM Sans', 'Noto Sans JP', sans-serif;
   color: #fff9ee;
-  background: #171125;
+  background: #0b111a;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -30,8 +30,8 @@ button {
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at 50% 45%, #322253 0%, #171125 60%),
-    #171125;
+    radial-gradient(circle at 50% 45%, #18374a 0%, #0b111a 62%),
+    #0b111a;
 }
 
 .game-canvas {
@@ -45,8 +45,8 @@ button {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, #09050f80 0%, transparent 25%, transparent 72%, #09050fb8 100%),
-    radial-gradient(circle at center, transparent 45%, #09050f8c 100%);
+    linear-gradient(180deg, #050a0f7d 0%, transparent 25%, transparent 72%, #05090fc7 100%),
+    radial-gradient(circle at center, transparent 45%, #05090f8c 100%);
 }
 
 .hud {
@@ -60,6 +60,64 @@ button {
   pointer-events: auto;
 }
 
+.measurement-panel {
+  position: absolute;
+  top: clamp(18px, 3vw, 42px);
+  left: clamp(18px, 3vw, 42px);
+  width: 218px;
+  padding: 17px 18px 15px;
+  border: 1px solid #69e6ff42;
+  border-radius: 15px;
+  color: #f2fbff;
+  background: #09131dd1;
+  box-shadow:
+    0 18px 50px #02070d80,
+    inset 0 0 32px #69e6ff0a;
+  backdrop-filter: blur(14px);
+}
+
+.measurement-label {
+  display: block;
+  color: #69e6ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.measurement-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 4px 0 14px;
+  font-size: 37px;
+  line-height: 1;
+  text-shadow: 0 0 24px #69e6ff3d;
+}
+
+.measurement-value small {
+  color: #8fa7b6;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.measurement-best {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 11px;
+  border-top: 1px solid #ffffff1c;
+  color: #8fa7b6;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.measurement-best b {
+  color: #b9ff69;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
 .shape-panel {
   position: absolute;
   top: clamp(18px, 3vw, 42px);
@@ -69,7 +127,7 @@ button {
   padding: 8px;
   border: 1px solid #ffffff26;
   border-radius: 18px;
-  background: #1d162eb8;
+  background: #0d1722c7;
   box-shadow: 0 18px 50px #09050e55;
   backdrop-filter: blur(14px);
 }
@@ -95,9 +153,9 @@ button {
 }
 
 .shape-button[aria-pressed='true'] {
-  color: #20162a;
-  background: #ffd06f;
-  box-shadow: 0 7px 24px #ffb84d44;
+  color: #071217;
+  background: #69e6ff;
+  box-shadow: 0 7px 24px #69e6ff42;
 }
 
 .shape-icon {
@@ -201,10 +259,10 @@ button {
   left: 50%;
   margin: 0;
   padding: 12px 18px;
-  border: 1px solid #ffd06f66;
+  border: 1px solid #69e6ff66;
   border-radius: 12px;
-  color: #22172c;
-  background: #ffd06f;
+  color: #071217;
+  background: #69e6ff;
   font-weight: 800;
   box-shadow: 0 12px 40px #08050d77;
   transform: translateX(-50%);
@@ -264,6 +322,31 @@ button {
     padding: 16px;
   }
 
+  .measurement-panel {
+    top: 14px;
+    left: 12px;
+    width: 172px;
+    padding: 12px 13px 11px;
+  }
+
+  .measurement-label {
+    font-size: 8px;
+  }
+
+  .measurement-value {
+    margin-bottom: 9px;
+    font-size: 29px;
+  }
+
+  .measurement-best {
+    padding-top: 8px;
+    font-size: 7px;
+  }
+
+  .measurement-best b {
+    font-size: 11px;
+  }
+
   .shape-panel {
     top: auto;
     right: 12px;
@@ -297,7 +380,7 @@ button {
   }
 
   .instructions {
-    bottom: 152px;
+    bottom: 176px;
     left: 50%;
     max-width: calc(100vw - 24px);
     overflow: hidden;

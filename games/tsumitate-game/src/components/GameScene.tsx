@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Canvas, type ThreeEvent } from '@react-three/fiber'
+import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
 import {
   CuboidCollider,
@@ -19,16 +19,24 @@ import {
   getExplosionCenter,
   getExplosionImpulse,
 } from '../game/gameRules'
+import {
+  canAccumulateStability,
+  getObjectTopY,
+  getTowerHeight,
+} from '../game/heightMeasurement'
 import type { StackingItem, Vec3 } from '../game/types'
 import { CameraJolt, Shockwave } from './SceneEffects'
+import { MeasurementGuide } from './MeasurementGuide'
 import { StackingObject } from './StackingObject'
 
 interface GameSceneProps {
   items: StackingItem[]
   destructionVersion: number
   containmentEnabled: boolean
+  currentHeight: number
   onPlace: (point: Vec3) => void
   onRemove: (id: string) => void
+  onHeightChange: (height: number, eligibleForRecord: boolean) => void
 }
 
 interface Blast {
@@ -57,6 +65,10 @@ function ContainmentWall() {
 
 function SceneContent(props: GameSceneProps) {
   const bodies = useRef(new Map<string, RapierRigidBody>())
+  const measurementElapsed = useRef(0)
+  const stableElapsed = useRef(0)
+  const lastMeasuredHeight = useRef(-1)
+  const lastRecordableHeight = useRef(-1)
   const [blast, setBlast] = useState<Blast | null>(null)
 
   const registerBody = useCallback((id: string, body: RapierRigidBody | null) => {
@@ -75,6 +87,55 @@ function SceneContent(props: GameSceneProps) {
     },
     [props.onPlace],
   )
+
+  useFrame((_, delta) => {
+    if (!props.containmentEnabled) {
+      measurementElapsed.current = 0
+      stableElapsed.current = 0
+      return
+    }
+
+    measurementElapsed.current += delta
+    if (measurementElapsed.current < 0.1) return
+    measurementElapsed.current = 0
+
+    const activeBodies = props.items.flatMap((item) => {
+      const body = bodies.current.get(item.id)
+      if (!body?.isValid()) return []
+      return [{ item, body }]
+    })
+    const allStable = activeBodies.every(({ body }) => {
+      const linear = body.linvel()
+      const angular = body.angvel()
+      return (
+        Math.hypot(linear.x, linear.y, linear.z) < 0.18 &&
+        Math.hypot(angular.x, angular.y, angular.z) < 0.25
+      )
+    })
+    stableElapsed.current = canAccumulateStability(
+      activeBodies.length,
+      props.items.length,
+      allStable,
+    )
+      ? stableElapsed.current + 0.1
+      : 0
+
+    const bounds = activeBodies.map(({ item, body }) => {
+      const position = body.translation()
+      return {
+        maxY: getObjectTopY(item.kind, position.y, body.rotation()),
+      }
+    })
+    const height = getTowerHeight(bounds)
+    const eligibleForRecord = stableElapsed.current >= 0.4
+    const heightChanged = height !== lastMeasuredHeight.current
+    const recordCandidateChanged =
+      eligibleForRecord && height !== lastRecordableHeight.current
+    if (!heightChanged && !recordCandidateChanged) return
+    lastMeasuredHeight.current = height
+    if (eligibleForRecord) lastRecordableHeight.current = height
+    props.onHeightChange(height, eligibleForRecord)
+  })
 
   useEffect(() => {
     if (props.destructionVersion === 0) return
@@ -104,15 +165,15 @@ function SceneContent(props: GameSceneProps) {
 
   return (
     <>
-      <color attach="background" args={['#171125']} />
-      <fog attach="fog" args={['#171125', 18, 42]} />
-      <Stars radius={60} depth={25} count={700} factor={2} saturation={0.3} fade />
-      <ambientLight intensity={0.75} />
+      <color attach="background" args={['#0b111a']} />
+      <fog attach="fog" args={['#0b111a', 18, 42]} />
+      <Stars radius={60} depth={25} count={520} factor={2} saturation={0.25} fade />
+      <ambientLight intensity={0.68} color="#c8f4ff" />
       <directionalLight
         castShadow
         position={[8, 14, 7]}
         intensity={2.6}
-        color="#ffe3b3"
+        color="#d7f7ff"
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
         shadow-camera-far={35}
@@ -124,7 +185,7 @@ function SceneContent(props: GameSceneProps) {
       <pointLight
         position={[-8, 7, -5]}
         intensity={45}
-        color="#7848ff"
+        color="#36d8ff"
         distance={25}
       />
 
@@ -134,11 +195,11 @@ function SceneContent(props: GameSceneProps) {
             <CylinderCollider args={[0.6, 7]} position={[0, -0.6, 0]} friction={1} />
             <mesh receiveShadow position={[0, -0.6, 0]} onClick={handlePlace}>
               <cylinderGeometry args={[7, 7, 1.2, 64]} />
-              <meshStandardMaterial color="#302942" roughness={0.82} metalness={0.16} />
+              <meshStandardMaterial color="#172832" roughness={0.72} metalness={0.28} />
             </mesh>
             <mesh position={[0, 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]}>
               <ringGeometry args={[6.45, 6.85, 64]} />
-              <meshBasicMaterial color="#8e72d8" transparent opacity={0.5} />
+              <meshBasicMaterial color="#69e6ff" transparent opacity={0.62} />
             </mesh>
           </RigidBody>
 
@@ -154,6 +215,10 @@ function SceneContent(props: GameSceneProps) {
             />
           ))}
         </Physics>
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <MeasurementGuide height={props.currentHeight} />
       </Suspense>
 
       {blast && <Shockwave key={blast.id} center={blast.center} />}

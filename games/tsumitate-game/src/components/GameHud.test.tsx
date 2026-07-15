@@ -15,6 +15,8 @@ describe('GameHud', () => {
         selectedKind="box"
         count={12}
         max={100}
+        currentHeight={4.2}
+        bestHeight={5.8}
         notice="もっと積めます"
         onSelect={onSelect}
         onDestroy={onDestroy}
@@ -26,6 +28,8 @@ describe('GameHud', () => {
       screen.queryByRole('heading', { name: '積み立てクラッシュ' }),
     ).not.toBeInTheDocument()
     expect(screen.queryByText('STACK · WATCH · CRASH')).not.toBeInTheDocument()
+    expect(screen.getByText('4.20')).toBeInTheDocument()
+    expect(screen.getByText('5.80 m')).toBeInTheDocument()
     expect(screen.getByText('12 / 100')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'ボックス' })).toHaveAttribute(
       'aria-pressed',

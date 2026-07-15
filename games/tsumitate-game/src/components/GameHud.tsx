@@ -5,6 +5,8 @@ interface GameHudProps {
   selectedKind: ShapeKind
   count: number
   max: number
+  currentHeight: number
+  bestHeight: number
   notice: string | null
   onSelect: (kind: ShapeKind) => void
   onDestroy: () => void
@@ -16,6 +18,18 @@ const kinds: ShapeKind[] = ['box', 'sphere', 'cylinder']
 export function GameHud(props: GameHudProps) {
   return (
     <div className="hud">
+      <aside className="measurement-panel" aria-label="高さ計測">
+        <span className="measurement-label">TOWER HEIGHT</span>
+        <strong className="measurement-value">
+          <span>{props.currentHeight.toFixed(2)}</span>
+          <small>m</small>
+        </strong>
+        <div className="measurement-best">
+          <span>PERSONAL BEST</span>
+          <b>{props.bestHeight.toFixed(2)} m</b>
+        </div>
+      </aside>
+
       <section className="shape-panel" aria-label="落とす形">
         {kinds.map((kind) => (
           <button
