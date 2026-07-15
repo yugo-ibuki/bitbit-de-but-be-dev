@@ -22,6 +22,10 @@ describe('GameHud', () => {
       />,
     )
 
+    expect(
+      screen.queryByRole('heading', { name: '積み立てクラッシュ' }),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByText('STACK · WATCH · CRASH')).not.toBeInTheDocument()
     expect(screen.getByText('12 / 100')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'ボックス' })).toHaveAttribute(
       'aria-pressed',

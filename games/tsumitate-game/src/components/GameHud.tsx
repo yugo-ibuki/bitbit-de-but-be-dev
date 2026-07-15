@@ -16,12 +16,6 @@ const kinds: ShapeKind[] = ['box', 'sphere', 'cylinder']
 export function GameHud(props: GameHudProps) {
   return (
     <div className="hud">
-      <header className="brand">
-        <p className="eyebrow">STACK · WATCH · CRASH</p>
-        <h1>積み立てクラッシュ</h1>
-        <p>好きな形を落として、思いきり崩そう。</p>
-      </header>
-
       <section className="shape-panel" aria-label="落とす形">
         {kinds.map((kind) => (
           <button

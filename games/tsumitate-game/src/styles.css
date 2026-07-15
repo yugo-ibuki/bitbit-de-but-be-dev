@@ -60,32 +60,6 @@ button {
   pointer-events: auto;
 }
 
-.brand {
-  max-width: min(600px, 58vw);
-  text-shadow: 0 3px 18px #08050d;
-}
-
-.brand h1 {
-  margin: 2px 0 8px;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: clamp(28px, 4vw, 54px);
-  line-height: 1.08;
-  letter-spacing: -0.06em;
-  white-space: nowrap;
-}
-
-.brand p {
-  margin: 0;
-  color: #d9cee8;
-  font-weight: 600;
-}
-
-.brand .eyebrow {
-  color: #ffca66;
-  font-size: 12px;
-  letter-spacing: 0.2em;
-}
-
 .shape-panel {
   position: absolute;
   top: clamp(18px, 3vw, 42px);
@@ -288,18 +262,6 @@ button {
 @media (max-width: 720px) {
   .hud {
     padding: 16px;
-  }
-
-  .brand h1 {
-    font-size: 24px;
-  }
-
-  .brand {
-    max-width: calc(100% - 100px);
-  }
-
-  .brand > p:last-child {
-    display: none;
   }
 
   .shape-panel {
