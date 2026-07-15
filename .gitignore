@@ -1,5 +1,6 @@
 **/node_modules
 **/dist
 **/.env
+**/.superpowers
 .DS_Store
 .idea
