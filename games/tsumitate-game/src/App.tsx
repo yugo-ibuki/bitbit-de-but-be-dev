@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react'
+import { GameErrorBoundary } from './components/GameErrorBoundary'
 import { GameHud } from './components/GameHud'
 import { GameScene } from './components/GameScene'
 import { MAX_OBJECTS, createStackingItem } from './game/gameRules'
@@ -29,12 +30,14 @@ export function App() {
 
   return (
     <main className="app-shell">
-      <GameScene
-        items={state.items}
-        destructionVersion={state.destructionVersion}
-        onPlace={placeObject}
-        onRemove={(id) => dispatch({ type: 'remove', id })}
-      />
+      <GameErrorBoundary>
+        <GameScene
+          items={state.items}
+          destructionVersion={state.destructionVersion}
+          onPlace={placeObject}
+          onRemove={(id) => dispatch({ type: 'remove', id })}
+        />
+      </GameErrorBoundary>
       <div className="scene-vignette" aria-hidden="true" />
       <GameHud
         selectedKind={state.selectedKind}

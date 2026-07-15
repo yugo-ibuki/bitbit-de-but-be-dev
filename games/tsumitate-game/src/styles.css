@@ -236,6 +236,47 @@ button {
   animation: notice-in 220ms ease-out;
 }
 
+.fatal-error {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  padding: 28px;
+  color: #fff9ee;
+  text-align: center;
+  background: #171125;
+}
+
+.fatal-error h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(26px, 4vw, 42px);
+}
+
+.fatal-error p {
+  margin: 0 0 20px;
+  color: #d9cee8;
+}
+
+.fatal-error .eyebrow {
+  margin: 0;
+  color: #ffca66;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.fatal-error button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 999px;
+  color: #22172c;
+  background: #ffd06f;
+  font-weight: 800;
+  cursor: pointer;
+}
+
 @keyframes notice-in {
   from {
     opacity: 0;
