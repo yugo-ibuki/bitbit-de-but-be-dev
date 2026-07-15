@@ -167,7 +167,7 @@ button {
 .instructions {
   position: absolute;
   bottom: 28px;
-  left: 50%;
+  left: clamp(18px, 3vw, 42px);
   margin: 0;
   padding: 9px 14px;
   border: 1px solid #ffffff14;
@@ -176,7 +176,6 @@ button {
   background: #130e20a8;
   font-size: 12px;
   white-space: nowrap;
-  transform: translateX(-50%);
   backdrop-filter: blur(8px);
 }
 
@@ -189,10 +188,11 @@ button {
 }
 
 .actions button {
-  padding: 14px 20px;
+  padding: 12px 18px;
   border: 0;
   border-radius: 999px;
   color: white;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 10px 30px #09050e66;
@@ -330,14 +330,17 @@ button {
 
   .actions button {
     flex: 1;
-    padding: 13px 10px;
+    padding: 12px 8px;
+    font-size: 13px;
   }
 
   .instructions {
     bottom: 152px;
+    left: 50%;
     max-width: calc(100vw - 24px);
     overflow: hidden;
     text-overflow: ellipsis;
+    transform: translateX(-50%);
   }
 }
 
