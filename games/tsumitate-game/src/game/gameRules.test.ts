@@ -1,0 +1,40 @@
+import { describe, expect, it } from 'vitest'
+import {
+  FALL_LIMIT_Y,
+  MAX_OBJECTS,
+  canSpawn,
+  createStackingItem,
+  getExplosionCenter,
+  getExplosionImpulse,
+  isOutOfBounds,
+} from './gameRules'
+
+describe('gameRules', () => {
+  it('blocks spawning at the object limit', () => {
+    expect(canSpawn(MAX_OBJECTS - 1)).toBe(true)
+    expect(canSpawn(MAX_OBJECTS)).toBe(false)
+  })
+
+  it('creates an item above the selected point', () => {
+    const item = createStackingItem('sphere', [1, 2, 3], 'item-1', () => 0.5)
+    expect(item.position).toEqual([1, 5, 3])
+    expect(item.rotation).toEqual([0, 0, 0])
+  })
+
+  it('calculates the average explosion center', () => {
+    expect(getExplosionCenter([[0, 0, 0], [2, 4, 6]])).toEqual([1, 2, 3])
+    expect(getExplosionCenter([])).toBeNull()
+  })
+
+  it('pushes away from the center with an upward component', () => {
+    const impulse = getExplosionImpulse([5, 0, 0], [0, 0, 0])
+    expect(impulse[0]).toBeGreaterThan(0)
+    expect(impulse[1]).toBeGreaterThan(0)
+    expect(impulse[2]).toBeCloseTo(0)
+  })
+
+  it('detects objects below the fall limit', () => {
+    expect(isOutOfBounds(FALL_LIMIT_Y - 0.01)).toBe(true)
+    expect(isOutOfBounds(FALL_LIMIT_Y)).toBe(false)
+  })
+})
