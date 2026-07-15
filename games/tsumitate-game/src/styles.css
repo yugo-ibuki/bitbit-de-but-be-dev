@@ -61,7 +61,7 @@ button {
 }
 
 .brand {
-  max-width: 430px;
+  max-width: min(600px, 58vw);
   text-shadow: 0 3px 18px #08050d;
 }
 
@@ -71,6 +71,7 @@ button {
   font-size: clamp(28px, 4vw, 54px);
   line-height: 1.08;
   letter-spacing: -0.06em;
+  white-space: nowrap;
 }
 
 .brand p {
@@ -290,7 +291,11 @@ button {
   }
 
   .brand h1 {
-    font-size: 29px;
+    font-size: 24px;
+  }
+
+  .brand {
+    max-width: calc(100% - 100px);
   }
 
   .brand > p:last-child {
