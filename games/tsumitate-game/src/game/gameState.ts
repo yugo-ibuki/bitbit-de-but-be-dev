@@ -5,6 +5,7 @@ export interface GameState {
   selectedKind: ShapeKind
   items: StackingItem[]
   destructionVersion: number
+  containmentEnabled: boolean
   notice: string | null
 }
 
@@ -20,6 +21,7 @@ export const initialGameState: GameState = {
   selectedKind: 'box',
   items: [],
   destructionVersion: 0,
+  containmentEnabled: true,
   notice: null,
 }
 
@@ -44,10 +46,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         destructionVersion: state.destructionVersion + 1,
+        containmentEnabled: false,
         notice: null,
       }
     case 'reset':
-      return { ...state, items: [], notice: null }
+      return { ...state, items: [], containmentEnabled: true, notice: null }
     case 'clear-notice':
       return { ...state, notice: null }
   }

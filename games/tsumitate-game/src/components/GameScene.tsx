@@ -8,12 +8,17 @@ import {
 import { Canvas, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
 import {
+  CuboidCollider,
   CylinderCollider,
   Physics,
   RigidBody,
   type RapierRigidBody,
 } from '@react-three/rapier'
-import { getExplosionCenter, getExplosionImpulse } from '../game/gameRules'
+import {
+  createContainmentSegments,
+  getExplosionCenter,
+  getExplosionImpulse,
+} from '../game/gameRules'
 import type { StackingItem, Vec3 } from '../game/types'
 import { CameraJolt, Shockwave } from './SceneEffects'
 import { StackingObject } from './StackingObject'
@@ -21,6 +26,7 @@ import { StackingObject } from './StackingObject'
 interface GameSceneProps {
   items: StackingItem[]
   destructionVersion: number
+  containmentEnabled: boolean
   onPlace: (point: Vec3) => void
   onRemove: (id: string) => void
 }
@@ -28,6 +34,25 @@ interface GameSceneProps {
 interface Blast {
   id: number
   center: Vec3
+}
+
+const containmentSegments = createContainmentSegments()
+
+function ContainmentWall() {
+  return (
+    <RigidBody type="fixed" colliders={false}>
+      {containmentSegments.map((segment, index) => (
+        <CuboidCollider
+          key={index}
+          args={[0.72, 6, 0.18]}
+          position={segment.position}
+          rotation={[0, segment.rotationY, 0]}
+          friction={0.9}
+          restitution={0.12}
+        />
+      ))}
+    </RigidBody>
+  )
 }
 
 function SceneContent(props: GameSceneProps) {
@@ -116,6 +141,8 @@ function SceneContent(props: GameSceneProps) {
               <meshBasicMaterial color="#8e72d8" transparent opacity={0.5} />
             </mesh>
           </RigidBody>
+
+          {props.containmentEnabled && <ContainmentWall />}
 
           {props.items.map((item) => (
             <StackingObject

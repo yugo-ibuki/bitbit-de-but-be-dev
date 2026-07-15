@@ -1178,3 +1178,19 @@ git commit -m "fix: polish stacking game interactions"
 ```
 
 If no files changed, skip this commit.
+
+### Task 9: Keep objects inside the stage until destruction
+
+**Files:**
+- Modify: `games/tsumitate-game/src/game/gameRules.ts`
+- Modify: `games/tsumitate-game/src/game/gameRules.test.ts`
+- Modify: `games/tsumitate-game/src/game/gameState.ts`
+- Modify: `games/tsumitate-game/src/game/gameState.test.ts`
+- Modify: `games/tsumitate-game/src/components/GameScene.tsx`
+- Modify: `games/tsumitate-game/src/App.tsx`
+
+- [ ] Add failing tests for circular wall segment positions and containment state transitions.
+- [ ] Run the focused tests and confirm the new assertions fail for missing behavior.
+- [ ] Add fixed invisible cuboid colliders around the stage while containment is enabled.
+- [ ] Disable containment on destruction and restore it on reset.
+- [ ] Run all tests, typecheck, build, and browser checks.

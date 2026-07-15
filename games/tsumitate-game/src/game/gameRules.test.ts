@@ -3,6 +3,7 @@ import {
   FALL_LIMIT_Y,
   MAX_OBJECTS,
   canSpawn,
+  createContainmentSegments,
   createStackingItem,
   getExplosionCenter,
   getExplosionImpulse,
@@ -36,5 +37,14 @@ describe('gameRules', () => {
   it('detects objects below the fall limit', () => {
     expect(isOutOfBounds(FALL_LIMIT_Y - 0.01)).toBe(true)
     expect(isOutOfBounds(FALL_LIMIT_Y)).toBe(false)
+  })
+
+  it('places collider segments around the stage edge', () => {
+    const segments = createContainmentSegments(24, 6.65)
+    expect(segments).toHaveLength(24)
+    for (const segment of segments) {
+      expect(Math.hypot(segment.position[0], segment.position[2])).toBeCloseTo(6.65)
+      expect(segment.position[1]).toBe(2.4)
+    }
   })
 })

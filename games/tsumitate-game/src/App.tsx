@@ -34,6 +34,7 @@ export function App() {
         <GameScene
           items={state.items}
           destructionVersion={state.destructionVersion}
+          containmentEnabled={state.containmentEnabled}
           onPlace={placeObject}
           onRemove={(id) => dispatch({ type: 'remove', id })}
         />

@@ -14,6 +14,24 @@ export const SHAPE_CONFIG: Record<
   cylinder: { label: 'シリンダー', dropOffset: 3.3, collider: 'hull' },
 }
 
+export interface ContainmentSegment {
+  position: Vec3
+  rotationY: number
+}
+
+export function createContainmentSegments(
+  count = 32,
+  radius = 6.65,
+): ContainmentSegment[] {
+  return Array.from({ length: count }, (_, index) => {
+    const angle = (index / count) * Math.PI * 2
+    return {
+      position: [Math.sin(angle) * radius, 2.4, Math.cos(angle) * radius],
+      rotationY: angle,
+    }
+  })
+}
+
 export function canSpawn(count: number): boolean {
   return count < MAX_OBJECTS
 }
