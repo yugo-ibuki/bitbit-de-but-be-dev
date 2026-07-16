@@ -8,6 +8,7 @@ describe('GameHud', () => {
     const user = userEvent.setup()
     const onDestroy = vi.fn()
     const onReset = vi.fn()
+    const onOpenRanking = vi.fn()
 
     render(
       <GameHud
@@ -31,6 +32,7 @@ describe('GameHud', () => {
         notice="もっと積めます"
         onDestroy={onDestroy}
         onReset={onReset}
+        onOpenRanking={onOpenRanking}
       />,
     )
 
@@ -50,8 +52,10 @@ describe('GameHud', () => {
 
     await user.click(screen.getByRole('button', { name: '破壊する' }))
     await user.click(screen.getByRole('button', { name: 'もう一度積む' }))
+    await user.click(screen.getByRole('button', { name: 'ランキングを見る' }))
 
     expect(onDestroy).toHaveBeenCalledOnce()
     expect(onReset).toHaveBeenCalledOnce()
+    expect(onOpenRanking).toHaveBeenCalledOnce()
   })
 })

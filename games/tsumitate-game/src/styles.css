@@ -118,6 +118,35 @@ button {
   letter-spacing: 0;
 }
 
+.ranking-open-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 11px;
+  padding: 8px 10px;
+  border: 1px solid #69e6ff3d;
+  border-radius: 9px;
+  color: #69e6ff;
+  background: #69e6ff0b;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+
+.ranking-open-button:hover {
+  border-color: #69e6ff;
+  background: #69e6ff16;
+  transform: translateY(-1px);
+}
+
+.ranking-open-button b {
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
 .challenge-panel {
   position: absolute;
   top: clamp(18px, 3vw, 42px);
@@ -944,6 +973,12 @@ button {
 
   .measurement-best b {
     font-size: 11px;
+  }
+
+  .ranking-open-button {
+    margin-top: 8px;
+    padding: 6px 8px;
+    font-size: 8px;
   }
 
   .challenge-panel {

@@ -12,6 +12,7 @@ interface GameHudProps {
   notice: string | null
   onDestroy: () => void
   onReset: () => void
+  onOpenRanking: () => void
 }
 
 const sizeLabel: Record<PieceSize, string> = {
@@ -43,6 +44,15 @@ export function GameHud(props: GameHudProps) {
           <span>TODAY&apos;S BEST</span>
           <b>{props.bestHeight.toFixed(2)} m</b>
         </div>
+        <button
+          className="ranking-open-button"
+          type="button"
+          aria-label="ランキングを見る"
+          onClick={props.onOpenRanking}
+        >
+          <span>RANKING</span>
+          <b aria-hidden="true">→</b>
+        </button>
       </aside>
 
       <section className="challenge-panel" aria-label="日替わりデッキ">

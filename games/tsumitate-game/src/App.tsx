@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'r
 import { GameErrorBoundary } from './components/GameErrorBoundary'
 import { GameHud } from './components/GameHud'
 import { GameScene } from './components/GameScene'
+import { RankingPage } from './components/RankingPage'
 import {
   getBrowserHeightStorage,
   loadBestHeight,
@@ -13,10 +14,17 @@ import {
 } from './game/challengeDeck'
 import { MAX_OBJECTS, createStackingItem } from './game/gameRules'
 import { gameReducer, initialGameState } from './game/gameState'
+import {
+  getBrowserRankingStorage,
+  loadRankingEntries,
+  saveRankingEntry,
+} from './game/rankingStorage'
 import type { Vec3 } from './game/types'
+import { useAppRoute } from './game/useAppRoute'
 import { useContainmentRecovery } from './game/useContainmentRecovery'
 
 export function App() {
+  const { route, navigate } = useAppRoute()
   const challengeKey = useMemo(() => getJapanChallengeKey(), [])
   const deck = useMemo(
     () => createDailyChallengeDeck(challengeKey),
@@ -27,7 +35,12 @@ export function App() {
   const [bestHeight, setBestHeight] = useState(() =>
     loadBestHeight(challengeKey, getBrowserHeightStorage()),
   )
+  const rankingStorage = useMemo(() => getBrowserRankingStorage(), [])
+  const [rankingEntries, setRankingEntries] = useState(() =>
+    loadRankingEntries(challengeKey, rankingStorage),
+  )
   const nextId = useRef(1)
+  const attemptRecorded = useRef(false)
 
   const placeObject = useCallback(
     (point: Vec3) => {
@@ -67,9 +80,31 @@ export function App() {
   )
 
   const handleReset = useCallback(() => {
+    attemptRecorded.current = false
     setCurrentHeight(0)
     dispatch({ type: 'reset' })
   }, [])
+
+  const handleDestroy = useCallback(() => {
+    if (
+      !attemptRecorded.current &&
+      state.items.length > 0 &&
+      currentHeight > 0
+    ) {
+      const completedAt = Date.now()
+      const entry = {
+        id: `attempt-${completedAt}-${Math.random().toString(36).slice(2, 8)}`,
+        height: currentHeight,
+        usedCount: state.usedCount,
+        completedAt,
+      }
+      setRankingEntries(
+        saveRankingEntry(challengeKey, entry, rankingStorage),
+      )
+      attemptRecorded.current = true
+    }
+    dispatch({ type: 'destroy' })
+  }, [challengeKey, currentHeight, rankingStorage, state.items.length, state.usedCount])
 
   const restoreContainment = useCallback(() => {
     dispatch({ type: 'restore-containment' })
@@ -105,9 +140,17 @@ export function App() {
         currentHeight={currentHeight}
         bestHeight={bestHeight}
         notice={state.notice}
-        onDestroy={() => dispatch({ type: 'destroy' })}
+        onDestroy={handleDestroy}
         onReset={handleReset}
+        onOpenRanking={() => navigate('ranking')}
       />
+      {route === 'ranking' && (
+        <RankingPage
+          challengeKey={challengeKey}
+          entries={rankingEntries}
+          onBack={() => navigate('game')}
+        />
+      )}
     </main>
   )
 }
