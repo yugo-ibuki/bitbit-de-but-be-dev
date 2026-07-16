@@ -24,7 +24,7 @@ import {
   getObjectTopY,
   getTowerHeight,
 } from '../game/heightMeasurement'
-import type { StackingItem, Vec3 } from '../game/types'
+import type { ChallengePiece, StackingItem, Vec3 } from '../game/types'
 import { CameraJolt, Shockwave } from './SceneEffects'
 import { ElevatedDropZone } from './ElevatedDropZone'
 import { MeasurementGuide } from './MeasurementGuide'
@@ -35,6 +35,7 @@ interface GameSceneProps {
   destructionVersion: number
   containmentEnabled: boolean
   currentHeight: number
+  currentPiece: ChallengePiece | null
   onPlace: (point: Vec3) => void
   onRemove: (id: string) => void
   onHeightChange: (height: number, eligibleForRecord: boolean) => void
@@ -190,7 +191,10 @@ function SceneContent(props: GameSceneProps) {
         distance={25}
       />
 
-      <ElevatedDropZone onPlace={props.onPlace} />
+      <ElevatedDropZone
+        currentPiece={props.currentPiece}
+        onPlace={props.onPlace}
+      />
 
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} colliders={false}>

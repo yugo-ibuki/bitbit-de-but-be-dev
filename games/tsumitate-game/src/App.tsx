@@ -89,6 +89,7 @@ export function App() {
           destructionVersion={state.destructionVersion}
           containmentEnabled={state.containmentEnabled}
           currentHeight={currentHeight}
+          currentPiece={deck[state.usedCount] ?? null}
           onPlace={placeObject}
           onRemove={(id) => dispatch({ type: 'remove', id })}
           onHeightChange={handleHeightChange}
