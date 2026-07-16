@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   CLICK_CATCHER_RADIUS,
   PLACEMENT_RADIUS,
+  getVerticalSurfacePoint,
   getElevatedPlacementPoint,
 } from './placement'
 
@@ -56,5 +57,13 @@ describe('getElevatedPlacementPoint', () => {
 
   it('keeps the click catcher outside every allowed camera position', () => {
     expect(CLICK_CATCHER_RADIUS).toBeGreaterThan(28)
+  })
+
+  it('uses the first downward physics hit as the placement height', () => {
+    expect(getVerticalSurfacePoint([2, 0, -1], 30, 24.4)).toEqual([
+      2,
+      5.6,
+      -1,
+    ])
   })
 })

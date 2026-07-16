@@ -3,6 +3,8 @@ import type { Vec3 } from './types'
 export const CLICK_CATCHER_RADIUS = 40
 export const PLACEMENT_RADIUS = 5.55
 export const MAX_PLACEMENT_DRAG = 6
+export const VERTICAL_CAST_HEIGHT = 60
+export const VERTICAL_CAST_DISTANCE = 120
 
 export interface PlacementRay {
   origin: Vec3
@@ -36,4 +38,13 @@ export function getElevatedPlacementPoint(
   if (placementSurfacePoints[0]) return placementSurfacePoints[0]
   const groundPoint = projectRayToGround(ray)
   return groundPoint ? clampToPlacementCircle(groundPoint) : null
+}
+
+export function getVerticalSurfacePoint(
+  point: Vec3,
+  rayOriginY: number,
+  timeOfImpact: number,
+): Vec3 {
+  const height = Math.round((rayOriginY - timeOfImpact) * 1000) / 1000
+  return [point[0], height, point[2]]
 }

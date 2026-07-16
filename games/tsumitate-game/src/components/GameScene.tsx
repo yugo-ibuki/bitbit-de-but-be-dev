@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
 import {
   CuboidCollider,
@@ -80,15 +80,6 @@ function SceneContent(props: GameSceneProps) {
       bodies.current.delete(id)
     }
   }, [])
-
-  const handlePlace = useCallback(
-    (event: ThreeEvent<MouseEvent>) => {
-      event.stopPropagation()
-      if (event.delta > 6) return
-      props.onPlace([event.point.x, event.point.y, event.point.z])
-    },
-    [props.onPlace],
-  )
 
   useFrame((_, delta) => {
     if (!props.containmentEnabled) {
@@ -191,20 +182,17 @@ function SceneContent(props: GameSceneProps) {
         distance={25}
       />
 
-      <ElevatedDropZone
-        currentPiece={props.currentPiece}
-        onPlace={props.onPlace}
-      />
-
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} colliders={false}>
+          <ElevatedDropZone
+            currentPiece={props.currentPiece}
+            onPlace={props.onPlace}
+          />
           <RigidBody type="fixed" colliders={false}>
             <CylinderCollider args={[0.6, 7]} position={[0, -0.6, 0]} friction={1} />
             <mesh
               receiveShadow
               position={[0, -0.6, 0]}
-              userData={{ placementSurface: true }}
-              onClick={handlePlace}
             >
               <cylinderGeometry args={[7, 7, 1.2, 64]} />
               <meshStandardMaterial color="#172832" roughness={0.72} metalness={0.28} />
@@ -221,7 +209,6 @@ function SceneContent(props: GameSceneProps) {
             <StackingObject
               key={item.id}
               item={item}
-              onPlace={handlePlace}
               onRemove={props.onRemove}
               registerBody={registerBody}
             />

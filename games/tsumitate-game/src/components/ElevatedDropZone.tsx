@@ -1,9 +1,13 @@
 import type { ThreeEvent } from '@react-three/fiber'
+import { useRapier } from '@react-three/rapier'
 import { useState } from 'react'
 import { BackSide } from 'three'
 import {
   CLICK_CATCHER_RADIUS,
+  VERTICAL_CAST_DISTANCE,
+  VERTICAL_CAST_HEIGHT,
   getElevatedPlacementPoint,
+  getVerticalSurfacePoint,
 } from '../game/placement'
 import type { ChallengePiece, Vec3 } from '../game/types'
 import { PlacementGhost } from './PlacementGhost'
@@ -11,12 +15,6 @@ import { PlacementGhost } from './PlacementGhost'
 interface ElevatedDropZoneProps {
   currentPiece: ChallengePiece | null
   onPlace: (point: Vec3) => void
-}
-
-function getSurfacePoints(event: ThreeEvent<PointerEvent | MouseEvent>): Vec3[] {
-  return event.intersections
-    .filter((hit) => hit.object.userData.placementSurface === true)
-    .map((hit) => [hit.point.x, hit.point.y, hit.point.z] as Vec3)
 }
 
 function getRay(event: ThreeEvent<PointerEvent | MouseEvent>) {
@@ -34,22 +32,37 @@ export function ElevatedDropZone({
   currentPiece,
   onPlace,
 }: ElevatedDropZoneProps) {
+  const { world, rapier } = useRapier()
   const [previewPoint, setPreviewPoint] = useState<Vec3 | null>(null)
+
+  const resolvePoint = (
+    event: ThreeEvent<PointerEvent | MouseEvent>,
+    dragDistance: number,
+  ): Vec3 | null => {
+    const groundPoint = getElevatedPlacementPoint(getRay(event), [], dragDistance)
+    if (!groundPoint) return null
+    const ray = new rapier.Ray(
+      { x: groundPoint[0], y: VERTICAL_CAST_HEIGHT, z: groundPoint[2] },
+      { x: 0, y: -1, z: 0 },
+    )
+    const hit = world.castRay(ray, VERTICAL_CAST_DISTANCE, true)
+    return hit
+      ? getVerticalSurfacePoint(
+          groundPoint,
+          VERTICAL_CAST_HEIGHT,
+          hit.timeOfImpact,
+        )
+      : groundPoint
+  }
 
   const handlePointerMove = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation()
-    setPreviewPoint(
-      getElevatedPlacementPoint(getRay(event), getSurfacePoints(event), 0),
-    )
+    setPreviewPoint(resolvePoint(event, 0))
   }
 
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation()
-    const point = getElevatedPlacementPoint(
-      getRay(event),
-      getSurfacePoints(event),
-      event.delta,
-    )
+    const point = resolvePoint(event, event.delta)
     if (!point) return
     setPreviewPoint(point)
     onPlace(point)
