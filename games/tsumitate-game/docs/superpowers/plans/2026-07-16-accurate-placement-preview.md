@@ -4,7 +4,7 @@
 
 **Goal:** Make the full vertical space above the platform clickable, project clicks accurately to the platform, clamp outside projections inside the circle, and show the current daily-deck piece as a ghost preview.
 
-**Architecture:** Pure vector helpers compute the ray/ground intersection and radial clamp. `ElevatedDropZone` renders stacked invisible discs, uses the same helper for pointer preview and click placement, and renders a non-interactive `PlacementGhost`.
+**Architecture:** Pure vector helpers compute the ray/ground intersection and radial clamp. `ElevatedDropZone` renders one camera-enclosing invisible sphere, uses the same helper for pointer preview and click placement, and renders a non-interactive `PlacementGhost`.
 
 **Tech Stack:** React 19, TypeScript, React Three Fiber, Three.js, Vitest
 
@@ -19,11 +19,11 @@
 - [ ] Clamp an outside point to the configured inner radius.
 - [ ] Run the focused test.
 
-### Task 2: Stacked click zone and ghost
+### Task 2: Full-scene click zone and ghost
 
 **Files:** `src/components/ElevatedDropZone.tsx`, `src/components/PlacementGhost.tsx`, `src/components/GameScene.tsx`, `src/App.tsx`
 
-- [ ] Render one invisible circle for every configured height and handle pointer events on their shared group.
+- [ ] Render one invisible back-sided sphere large enough to contain every allowed camera position.
 - [ ] Store the latest projected point during pointer movement and clear it when leaving.
 - [ ] Render current piece geometry, scale, color-independent cyan wireframe, and initial rotation at the preview point.
 - [ ] Disable ghost raycasting, shadows, depth writing, and physics.
