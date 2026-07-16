@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
-  BEST_HEIGHT_STORAGE_KEY,
+  getBestHeightStorageKey,
   loadBestHeight,
   saveBestHeight,
 } from './bestHeightStorage'
@@ -9,15 +9,16 @@ describe('best height storage', () => {
   beforeEach(() => localStorage.clear())
 
   it('round-trips a finite non-negative record', () => {
-    saveBestHeight(4.2, localStorage)
-    expect(loadBestHeight(localStorage)).toBe(4.2)
+    saveBestHeight('2026-07-16', 4.2, localStorage)
+    expect(loadBestHeight('2026-07-16', localStorage)).toBe(4.2)
+    expect(loadBestHeight('2026-07-17', localStorage)).toBe(0)
   })
 
   it.each(['broken', '-2', 'null', '"4"'])(
     'rejects invalid value %s',
     (value) => {
-      localStorage.setItem(BEST_HEIGHT_STORAGE_KEY, value)
-      expect(loadBestHeight(localStorage)).toBe(0)
+      localStorage.setItem(getBestHeightStorageKey('2026-07-16'), value)
+      expect(loadBestHeight('2026-07-16', localStorage)).toBe(0)
     },
   )
 
@@ -31,7 +32,7 @@ describe('best height storage', () => {
       },
     }
 
-    expect(loadBestHeight(storage)).toBe(0)
-    expect(() => saveBestHeight(3.2, storage)).not.toThrow()
+    expect(loadBestHeight('2026-07-16', storage)).toBe(0)
+    expect(() => saveBestHeight('2026-07-16', 3.2, storage)).not.toThrow()
   })
 })

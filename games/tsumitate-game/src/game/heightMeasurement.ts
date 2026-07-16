@@ -32,8 +32,9 @@ export function getObjectTopY(
   kind: ShapeKind,
   centerY: number,
   rotation: QuaternionLike,
+  scale = 1,
 ): number {
-  if (kind === 'sphere') return centerY + SPHERE_RADIUS
+  if (kind === 'sphere') return centerY + SPHERE_RADIUS * scale
 
   const rowY = {
     x: 2 * (rotation.x * rotation.y + rotation.z * rotation.w),
@@ -46,14 +47,15 @@ export function getObjectTopY(
       Math.abs(rowY.x) * BOX_HALF_EXTENTS.x +
       Math.abs(rowY.y) * BOX_HALF_EXTENTS.y +
       Math.abs(rowY.z) * BOX_HALF_EXTENTS.z
-    return centerY + halfExtentY
+    return centerY + halfExtentY * scale
   }
 
   const axisY = Math.min(1, Math.abs(rowY.y))
   const radialY = Math.sqrt(Math.max(0, 1 - axisY * axisY))
-  return centerY +
-    CYLINDER_HALF_HEIGHT * axisY +
-    CYLINDER_RADIUS * radialY
+  return (
+    centerY +
+    (CYLINDER_HALF_HEIGHT * axisY + CYLINDER_RADIUS * radialY) * scale
+  )
 }
 
 export function getTowerHeight(bounds: readonly HeightBound[]): number {

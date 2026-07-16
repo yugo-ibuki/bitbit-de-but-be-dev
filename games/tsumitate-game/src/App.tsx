@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { GameErrorBoundary } from './components/GameErrorBoundary'
 import { GameHud } from './components/GameHud'
 import { GameScene } from './components/GameScene'
@@ -7,29 +7,43 @@ import {
   loadBestHeight,
   saveBestHeight,
 } from './game/bestHeightStorage'
+import {
+  createDailyChallengeDeck,
+  getJapanChallengeKey,
+} from './game/challengeDeck'
 import { MAX_OBJECTS, createStackingItem } from './game/gameRules'
 import { gameReducer, initialGameState } from './game/gameState'
 import type { Vec3 } from './game/types'
 import { useContainmentRecovery } from './game/useContainmentRecovery'
 
 export function App() {
+  const challengeKey = useMemo(() => getJapanChallengeKey(), [])
+  const deck = useMemo(
+    () => createDailyChallengeDeck(challengeKey),
+    [challengeKey],
+  )
   const [state, dispatch] = useReducer(gameReducer, initialGameState)
   const [currentHeight, setCurrentHeight] = useState(0)
   const [bestHeight, setBestHeight] = useState(() =>
-    loadBestHeight(getBrowserHeightStorage()),
+    loadBestHeight(challengeKey, getBrowserHeightStorage()),
   )
   const nextId = useRef(1)
 
   const placeObject = useCallback(
     (point: Vec3) => {
+      const piece = deck[state.usedCount]
+      if (!piece) {
+        dispatch({ type: 'deck-complete' })
+        return
+      }
       const item = createStackingItem(
-        state.selectedKind,
+        piece,
         point,
         'object-' + nextId.current++,
       )
       dispatch({ type: 'place', item })
     },
-    [state.selectedKind],
+    [deck, state.usedCount],
   )
 
   useEffect(() => {
@@ -45,11 +59,11 @@ export function App() {
       if (!eligibleForRecord) return
       setBestHeight((best) => {
         if (height <= best) return best
-        saveBestHeight(height, getBrowserHeightStorage())
+        saveBestHeight(challengeKey, height, getBrowserHeightStorage())
         return height
       })
     },
-    [state.containmentEnabled],
+    [challengeKey, state.containmentEnabled],
   )
 
   const handleReset = useCallback(() => {
@@ -82,13 +96,14 @@ export function App() {
       </GameErrorBoundary>
       <div className="scene-vignette" aria-hidden="true" />
       <GameHud
-        selectedKind={state.selectedKind}
-        count={state.items.length}
+        challengeKey={challengeKey}
+        currentPiece={deck[state.usedCount] ?? null}
+        nextPieces={deck.slice(state.usedCount + 1, state.usedCount + 4)}
+        usedCount={state.usedCount}
         max={MAX_OBJECTS}
         currentHeight={currentHeight}
         bestHeight={bestHeight}
         notice={state.notice}
-        onSelect={(kind) => dispatch({ type: 'select', kind })}
         onDestroy={() => dispatch({ type: 'destroy' })}
         onReset={handleReset}
       />

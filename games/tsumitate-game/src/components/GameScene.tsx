@@ -124,7 +124,7 @@ function SceneContent(props: GameSceneProps) {
     const bounds = activeBodies.map(({ item, body }) => {
       const position = body.translation()
       return {
-        maxY: getObjectTopY(item.kind, position.y, body.rotation()),
+        maxY: getObjectTopY(item.kind, position.y, body.rotation(), item.scale),
       }
     })
     const height = getTowerHeight(bounds)

@@ -48,6 +48,7 @@ export function StackingObject({
       <mesh
         castShadow
         receiveShadow
+        scale={item.scale}
         userData={{ placementSurface: true }}
         onClick={onPlace}
       >

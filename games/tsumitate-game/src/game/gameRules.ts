@@ -1,9 +1,7 @@
-import type { ShapeKind, StackingItem, Vec3 } from './types'
+import type { ChallengePiece, ShapeKind, StackingItem, Vec3 } from './types'
 
 export const MAX_OBJECTS = 100
 export const FALL_LIMIT_Y = -20
-
-const COLORS = ['#ff6b6b', '#ffd166', '#06d6a0', '#4cc9f0', '#b517ff'] as const
 
 export const SHAPE_CONFIG: Record<
   ShapeKind,
@@ -37,21 +35,22 @@ export function canSpawn(count: number): boolean {
 }
 
 export function createStackingItem(
-  kind: ShapeKind,
+  piece: ChallengePiece,
   point: Vec3,
   id: string,
-  random: () => number = Math.random,
 ): StackingItem {
-  const angle = () => (random() - 0.5) * 0.36
-  const rotation: Vec3 = [angle(), angle(), angle()]
-  const colorIndex = Math.min(COLORS.length - 1, Math.floor(random() * COLORS.length))
-
   return {
     id,
-    kind,
-    position: [point[0], point[1] + SHAPE_CONFIG[kind].dropOffset, point[2]],
-    rotation,
-    color: COLORS[colorIndex],
+    kind: piece.kind,
+    size: piece.size,
+    scale: piece.scale,
+    position: [
+      point[0],
+      point[1] + SHAPE_CONFIG[piece.kind].dropOffset * piece.scale,
+      point[2],
+    ],
+    rotation: piece.rotation,
+    color: piece.color,
   }
 }
 

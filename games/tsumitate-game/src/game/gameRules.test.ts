@@ -17,9 +17,21 @@ describe('gameRules', () => {
   })
 
   it('creates an item above the selected point', () => {
-    const item = createStackingItem('sphere', [1, 2, 3], 'item-1', () => 0.5)
+    const item = createStackingItem(
+      {
+        kind: 'sphere',
+        size: 'medium',
+        scale: 1,
+        color: '#fff',
+        rotation: [0.1, 0.2, 0.3],
+      },
+      [1, 2, 3],
+      'item-1',
+    )
     expect(item.position).toEqual([1, 5, 3])
-    expect(item.rotation).toEqual([0, 0, 0])
+    expect(item.rotation).toEqual([0.1, 0.2, 0.3])
+    expect(item.size).toBe('medium')
+    expect(item.scale).toBe(1)
   })
 
   it('calculates the average explosion center', () => {

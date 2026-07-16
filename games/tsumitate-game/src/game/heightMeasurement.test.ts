@@ -18,9 +18,9 @@ describe('getTowerHeight', () => {
   it('uses each shape extent for an upright object', () => {
     const identity = { x: 0, y: 0, z: 0, w: 1 }
 
-    expect(getObjectTopY('box', 2, identity)).toBeCloseTo(2.6)
-    expect(getObjectTopY('sphere', 2, identity)).toBeCloseTo(2.9)
-    expect(getObjectTopY('cylinder', 2, identity)).toBeCloseTo(2.9)
+    expect(getObjectTopY('box', 2, identity, 1.25)).toBeCloseTo(2.75)
+    expect(getObjectTopY('sphere', 2, identity, 0.78)).toBeCloseTo(2.702)
+    expect(getObjectTopY('cylinder', 2, identity, 1.25)).toBeCloseTo(3.125)
   })
 
   it('accounts for the rigid body rotation', () => {
@@ -31,8 +31,8 @@ describe('getTowerHeight', () => {
       w: Math.SQRT1_2,
     }
 
-    expect(getObjectTopY('box', 2, quarterTurnX)).toBeCloseTo(2.75)
-    expect(getObjectTopY('cylinder', 2, quarterTurnX)).toBeCloseTo(2.82)
+    expect(getObjectTopY('box', 2, quarterTurnX, 1)).toBeCloseTo(2.75)
+    expect(getObjectTopY('cylinder', 2, quarterTurnX, 1)).toBeCloseTo(2.82)
   })
 
   it('does not accumulate stable time before a body is registered', () => {

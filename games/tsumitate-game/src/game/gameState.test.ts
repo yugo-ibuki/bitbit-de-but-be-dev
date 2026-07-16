@@ -4,20 +4,31 @@ import { gameReducer, initialGameState } from './gameState'
 
 describe('gameReducer', () => {
   it('selects a shape and adds an item', () => {
-    const selected = gameReducer(initialGameState, { type: 'select', kind: 'sphere' })
-    const item = createStackingItem('sphere', [0, 0, 0], 'item-1', () => 0.5)
-    const placed = gameReducer(selected, { type: 'place', item })
-    expect(placed.selectedKind).toBe('sphere')
+    const item = createStackingItem(
+      { kind: 'sphere', size: 'medium', scale: 1, color: '#fff', rotation: [0, 0, 0] },
+      [0, 0, 0],
+      'item-1',
+    )
+    const placed = gameReducer(initialGameState, { type: 'place', item })
     expect(placed.items).toEqual([item])
+    expect(placed.usedCount).toBe(1)
   })
 
   it('blocks items beyond the object limit', () => {
     let state = initialGameState
     for (let index = 0; index < MAX_OBJECTS; index += 1) {
-      const item = createStackingItem('box', [0, 0, 0], 'item-' + index, () => 0.5)
+      const item = createStackingItem(
+        { kind: 'box', size: 'medium', scale: 1, color: '#fff', rotation: [0, 0, 0] },
+        [0, 0, 0],
+        'item-' + index,
+      )
       state = gameReducer(state, { type: 'place', item })
     }
-    const overflow = createStackingItem('box', [0, 0, 0], 'overflow', () => 0.5)
+    const overflow = createStackingItem(
+      { kind: 'box', size: 'medium', scale: 1, color: '#fff', rotation: [0, 0, 0] },
+      [0, 0, 0],
+      'overflow',
+    )
     const blocked = gameReducer(state, { type: 'place', item: overflow })
     expect(blocked.items).toHaveLength(MAX_OBJECTS)
     expect(blocked.notice).toContain('100個まで')
@@ -27,7 +38,11 @@ describe('gameReducer', () => {
     expect(gameReducer(initialGameState, { type: 'destroy' }).notice).toBe(
       '先に物体を積んでください',
     )
-    const item = createStackingItem('box', [0, 0, 0], 'item-1', () => 0.5)
+    const item = createStackingItem(
+      { kind: 'box', size: 'medium', scale: 1, color: '#fff', rotation: [0, 0, 0] },
+      [0, 0, 0],
+      'item-1',
+    )
     const withItem = gameReducer(initialGameState, { type: 'place', item })
     const destroyed = gameReducer(withItem, { type: 'destroy' })
     expect(destroyed.destructionVersion).toBe(1)
@@ -37,11 +52,18 @@ describe('gameReducer', () => {
   })
 
   it('removes fallen objects and resets all objects', () => {
-    const item = createStackingItem('box', [0, 0, 0], 'item-1', () => 0.5)
+    const item = createStackingItem(
+      { kind: 'box', size: 'medium', scale: 1, color: '#fff', rotation: [0, 0, 0] },
+      [0, 0, 0],
+      'item-1',
+    )
     const withItem = gameReducer(initialGameState, { type: 'place', item })
-    expect(gameReducer(withItem, { type: 'remove', id: item.id }).items).toEqual([])
+    const removed = gameReducer(withItem, { type: 'remove', id: item.id })
+    expect(removed.items).toEqual([])
+    expect(removed.usedCount).toBe(1)
     const reset = gameReducer(withItem, { type: 'reset' })
     expect(reset.items).toEqual([])
+    expect(reset.usedCount).toBe(0)
     expect(reset.containmentEnabled).toBe(true)
   })
 })

@@ -1,6 +1,8 @@
-export const BEST_HEIGHT_STORAGE_KEY = 'tsumitate-game:best-height:v1'
-
 export type HeightStorage = Pick<Storage, 'getItem' | 'setItem'>
+
+export function getBestHeightStorageKey(challengeKey: string): string {
+  return `tsumitate-game:best-height:v2:${challengeKey}`
+}
 
 export function getBrowserHeightStorage(): HeightStorage | undefined {
   try {
@@ -10,10 +12,13 @@ export function getBrowserHeightStorage(): HeightStorage | undefined {
   }
 }
 
-export function loadBestHeight(storage: HeightStorage | undefined): number {
+export function loadBestHeight(
+  challengeKey: string,
+  storage: HeightStorage | undefined,
+): number {
   try {
     const value: unknown = JSON.parse(
-      storage?.getItem(BEST_HEIGHT_STORAGE_KEY) ?? '0',
+      storage?.getItem(getBestHeightStorageKey(challengeKey)) ?? '0',
     )
     return typeof value === 'number' && Number.isFinite(value) && value >= 0
       ? value
@@ -24,12 +29,13 @@ export function loadBestHeight(storage: HeightStorage | undefined): number {
 }
 
 export function saveBestHeight(
+  challengeKey: string,
   value: number,
   storage: HeightStorage | undefined,
 ): void {
   if (!Number.isFinite(value) || value < 0) return
   try {
-    storage?.setItem(BEST_HEIGHT_STORAGE_KEY, JSON.stringify(value))
+    storage?.setItem(getBestHeightStorageKey(challengeKey), JSON.stringify(value))
   } catch {
     // Keep the in-memory record when browser storage is unavailable.
   }
