@@ -1,7 +1,6 @@
 import type { Vec3 } from './types'
 
-export const ELEVATED_DROP_ZONE_RADIUS = 6.3
-export const ELEVATED_DROP_ZONE_HEIGHTS = [3, 6, 9, 12, 15, 18, 21, 24] as const
+export const CLICK_CATCHER_RADIUS = 40
 export const PLACEMENT_RADIUS = 5.55
 export const MAX_PLACEMENT_DRAG = 6
 

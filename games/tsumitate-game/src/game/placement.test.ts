@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  ELEVATED_DROP_ZONE_HEIGHTS,
+  CLICK_CATCHER_RADIUS,
   PLACEMENT_RADIUS,
   getElevatedPlacementPoint,
 } from './placement'
@@ -54,7 +54,7 @@ describe('getElevatedPlacementPoint', () => {
     ).toBeNull()
   })
 
-  it('covers the complete vertical placement zone', () => {
-    expect(ELEVATED_DROP_ZONE_HEIGHTS).toEqual([3, 6, 9, 12, 15, 18, 21, 24])
+  it('keeps the click catcher outside every allowed camera position', () => {
+    expect(CLICK_CATCHER_RADIUS).toBeGreaterThan(28)
   })
 })

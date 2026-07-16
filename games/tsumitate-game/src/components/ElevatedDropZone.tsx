@@ -1,8 +1,8 @@
 import type { ThreeEvent } from '@react-three/fiber'
 import { useState } from 'react'
+import { BackSide } from 'three'
 import {
-  ELEVATED_DROP_ZONE_HEIGHTS,
-  ELEVATED_DROP_ZONE_RADIUS,
+  CLICK_CATCHER_RADIUS,
   getElevatedPlacementPoint,
 } from '../game/placement'
 import type { ChallengePiece, Vec3 } from '../game/types'
@@ -57,22 +57,19 @@ export function ElevatedDropZone({
 
   return (
     <>
-      <group
+      <mesh
+        position={[0, 4, 0]}
         onPointerMove={handlePointerMove}
         onPointerLeave={() => setPreviewPoint(null)}
         onClick={handleClick}
       >
-        {ELEVATED_DROP_ZONE_HEIGHTS.map((height) => (
-          <mesh
-            key={height}
-            position={[0, height, 0]}
-            rotation={[-Math.PI / 2, 0, 0]}
-          >
-            <circleGeometry args={[ELEVATED_DROP_ZONE_RADIUS, 64]} />
-            <meshBasicMaterial colorWrite={false} depthWrite={false} />
-          </mesh>
-        ))}
-      </group>
+        <sphereGeometry args={[CLICK_CATCHER_RADIUS, 32, 20]} />
+        <meshBasicMaterial
+          side={BackSide}
+          colorWrite={false}
+          depthWrite={false}
+        />
+      </mesh>
       {currentPiece && previewPoint && (
         <PlacementGhost piece={currentPiece} point={previewPoint} />
       )}
