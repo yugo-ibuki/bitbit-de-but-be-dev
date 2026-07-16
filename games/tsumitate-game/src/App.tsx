@@ -10,6 +10,7 @@ import {
 import { MAX_OBJECTS, createStackingItem } from './game/gameRules'
 import { gameReducer, initialGameState } from './game/gameState'
 import type { Vec3 } from './game/types'
+import { useContainmentRecovery } from './game/useContainmentRecovery'
 
 export function App() {
   const [state, dispatch] = useReducer(gameReducer, initialGameState)
@@ -55,6 +56,16 @@ export function App() {
     setCurrentHeight(0)
     dispatch({ type: 'reset' })
   }, [])
+
+  const restoreContainment = useCallback(() => {
+    dispatch({ type: 'restore-containment' })
+  }, [])
+
+  useContainmentRecovery(
+    state.containmentEnabled,
+    state.destructionVersion,
+    restoreContainment,
+  )
 
   return (
     <main className="app-shell">

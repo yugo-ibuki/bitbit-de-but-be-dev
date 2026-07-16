@@ -14,6 +14,7 @@ export type GameAction =
   | { type: 'place'; item: StackingItem }
   | { type: 'remove'; id: string }
   | { type: 'destroy' }
+  | { type: 'restore-containment' }
   | { type: 'reset' }
   | { type: 'clear-notice' }
 
@@ -49,6 +50,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         containmentEnabled: false,
         notice: null,
       }
+    case 'restore-containment':
+      return { ...state, containmentEnabled: true }
     case 'reset':
       return { ...state, items: [], containmentEnabled: true, notice: null }
     case 'clear-notice':

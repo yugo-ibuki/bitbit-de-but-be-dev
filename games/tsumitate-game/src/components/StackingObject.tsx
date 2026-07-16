@@ -45,7 +45,12 @@ export function StackingObject({
       angularDamping={0.18}
       ccd
     >
-      <mesh castShadow receiveShadow onClick={onPlace}>
+      <mesh
+        castShadow
+        receiveShadow
+        userData={{ placementSurface: true }}
+        onClick={onPlace}
+      >
         {item.kind === 'box' && <boxGeometry args={[1.7, 1.2, 1.5]} />}
         {item.kind === 'sphere' && <sphereGeometry args={[0.9, 32, 24]} />}
         {item.kind === 'cylinder' && (

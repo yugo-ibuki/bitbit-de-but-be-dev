@@ -26,6 +26,7 @@ import {
 } from '../game/heightMeasurement'
 import type { StackingItem, Vec3 } from '../game/types'
 import { CameraJolt, Shockwave } from './SceneEffects'
+import { ElevatedDropZone } from './ElevatedDropZone'
 import { MeasurementGuide } from './MeasurementGuide'
 import { StackingObject } from './StackingObject'
 
@@ -189,11 +190,18 @@ function SceneContent(props: GameSceneProps) {
         distance={25}
       />
 
+      <ElevatedDropZone onPlace={props.onPlace} />
+
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} colliders={false}>
           <RigidBody type="fixed" colliders={false}>
             <CylinderCollider args={[0.6, 7]} position={[0, -0.6, 0]} friction={1} />
-            <mesh receiveShadow position={[0, -0.6, 0]} onClick={handlePlace}>
+            <mesh
+              receiveShadow
+              position={[0, -0.6, 0]}
+              userData={{ placementSurface: true }}
+              onClick={handlePlace}
+            >
               <cylinderGeometry args={[7, 7, 1.2, 64]} />
               <meshStandardMaterial color="#172832" roughness={0.72} metalness={0.28} />
             </mesh>

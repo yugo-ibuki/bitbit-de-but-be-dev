@@ -32,6 +32,8 @@ describe('gameReducer', () => {
     const destroyed = gameReducer(withItem, { type: 'destroy' })
     expect(destroyed.destructionVersion).toBe(1)
     expect(destroyed.containmentEnabled).toBe(false)
+    const restored = gameReducer(destroyed, { type: 'restore-containment' })
+    expect(restored.containmentEnabled).toBe(true)
   })
 
   it('removes fallen objects and resets all objects', () => {
