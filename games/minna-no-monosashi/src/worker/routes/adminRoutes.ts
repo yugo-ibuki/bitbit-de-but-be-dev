@@ -181,10 +181,12 @@ export function adminRoutes() {
     const block = await new BlockService(context.env.DB).findAdminById(
       context.req.param("id"),
     );
-    const results = await new ResponseService(
-      context.env.DB,
-    ).adminBlockResults(block.id);
-    return context.json({ results });
+    const responseService = new ResponseService(context.env.DB);
+    const [results, participantCount] = await Promise.all([
+      responseService.adminBlockResults(block.id),
+      responseService.adminParticipantCount(block.id),
+    ]);
+    return context.json({ results, participantCount });
   });
 
   return routes;

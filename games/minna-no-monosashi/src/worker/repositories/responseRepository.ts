@@ -120,6 +120,16 @@ export class ResponseRepository {
     return result.results.map((row) => row.id);
   }
 
+  async participantCount(blockId: string): Promise<number> {
+    const row = await this.db
+      .prepare(
+        "SELECT COUNT(DISTINCT voter_key_hash) AS count FROM responses WHERE block_id = ?",
+      )
+      .bind(blockId)
+      .first<{ count: number }>();
+    return Number(row?.count ?? 0);
+  }
+
   async findPublicBlock(
     slug: string,
   ): Promise<{ id: string; status: PublicBlockStatus } | null> {

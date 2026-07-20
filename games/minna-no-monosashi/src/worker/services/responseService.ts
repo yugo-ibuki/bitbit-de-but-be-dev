@@ -118,6 +118,10 @@ export class ResponseService {
     );
   }
 
+  adminParticipantCount(blockId: string): Promise<number> {
+    return this.repository.participantCount(blockId);
+  }
+
   private async resolveExisting(
     questionId: string,
     existingOptionId: string,

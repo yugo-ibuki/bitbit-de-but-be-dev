@@ -14,7 +14,7 @@ export function QuestionResultPage() {
   const initialResult = (location.state as { result?: QuestionResult } | null)?.result ?? null;
   const [block, setBlock] = useState<PublicBlockDetail | null>(null);
   const [result, setResult] = useState<QuestionResult | null>(initialResult);
-  const [answered, setAnswered] = useState<string[]>([]);
+  const [answered, setAnswered] = useState<string[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const questionIndex = Number(position) - 1;
 
@@ -36,7 +36,7 @@ export function QuestionResultPage() {
   }, [identity.token, initialResult, questionIndex, slug]);
 
   if (error) return <ErrorState message={error} />;
-  if (!block || !result) return <LoadingState label="結果を集計しています" />;
+  if (!block || !result || !answered) return <LoadingState label="結果を集計しています" />;
   const question = block.questions[questionIndex];
   if (!question) return <ErrorState message="質問が見つかりません" />;
 
