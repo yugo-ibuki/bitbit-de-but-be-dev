@@ -33,6 +33,7 @@ games/minna-no-monosashi/
 ├── vitest.config.ts                  # domain/UIのjsdomテスト
 ├── vitest.worker.config.ts           # workerd + D1 API統合テスト
 ├── wrangler.jsonc                    # Worker、assets、D1、rate limit bindings
+├── worker-configuration.d.ts         # wrangler typesによる生成binding型
 ├── migrations/
 │   └── 0001_initial.sql              # blocks/questions/options/responses
 ├── seed/
@@ -91,7 +92,6 @@ games/minna-no-monosashi/
     └── worker/
         ├── index.ts                   # ExportedHandler
         ├── app.ts                     # Hono composition
-        ├── env.ts                     # bindings型
         ├── auth/
         │   ├── crypto.ts              # PBKDF2、HMAC、timing-safe比較
         │   ├── session.ts             # 署名Cookie
@@ -188,6 +188,7 @@ games/minna-no-monosashi/
   "name": "minna-no-monosashi",
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-07-20",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "not_found_handling": "single-page-application",
     "run_worker_first": ["/api/*"]
@@ -201,7 +202,12 @@ games/minna-no-monosashi/
   "ratelimits": [
     { "name": "VOTE_RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },
     { "name": "LOGIN_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
-  ]
+  ],
+  "observability": {
+    "enabled": true,
+    "logs": { "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.01 }
+  }
 }
 ```
 
@@ -248,7 +254,7 @@ export default defineConfig({
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "types": ["vite/client", "vitest/globals", "@cloudflare/workers-types"]
+    "types": ["vite/client", "vitest/globals"]
   },
   "include": ["src", "test", "e2e", "*.ts"]
 }
@@ -258,9 +264,9 @@ export default defineConfig({
 
 - [ ] **Step 2: 依存関係をインストールする**
 
-Run: `npm install`
+Run: `npm install && npm run cf-typegen`
 
-Expected: `package-lock.json` が生成され、exit 0。
+Expected: `package-lock.json` と `worker-configuration.d.ts` が生成され、生成された `Env` に `DB`、`VOTE_RATE_LIMITER`、`LOGIN_RATE_LIMITER` が含まれ、exit 0。
 
 - [ ] **Step 3: 最初の失敗するUIテストを書く**
 
@@ -426,7 +432,6 @@ git commit -m "feat: add question block domain rules"
 - Create: `games/minna-no-monosashi/vitest.worker.config.ts`
 - Create: `games/minna-no-monosashi/test/apply-migrations.ts`
 - Test: `games/minna-no-monosashi/test/worker/public-api.test.ts`
-- Create: `games/minna-no-monosashi/src/worker/env.ts`
 - Create: `games/minna-no-monosashi/src/worker/test-env.d.ts`
 - Create: `games/minna-no-monosashi/src/worker/index.ts`
 - Create: `games/minna-no-monosashi/src/worker/app.ts`
@@ -507,30 +512,18 @@ Run: `npm run test:worker -- test/worker/public-api.test.ts`
 
 Expected: FAIL because Worker entry and route are missing。
 
-- [ ] **Step 5: Env、Hono、security headers、空一覧を実装する**
-
-```ts
-export interface Env {
-  DB: D1Database
-  VOTE_RATE_LIMITER: RateLimit
-  LOGIN_RATE_LIMITER: RateLimit
-  ADMIN_PASSWORD_HASH: string
-  SESSION_SECRET: string
-  VOTER_HASH_SECRET: string
-  TEST_MIGRATIONS?: D1Migration[]
-}
-```
+- [ ] **Step 5: 生成Env、Hono、security headers、空一覧を実装する**
 
 ```ts
 // src/worker/test-env.d.ts
-import type { Env } from './env'
-
 declare module 'cloudflare:test' {
   interface ProvidedEnv extends Env {
     TEST_MIGRATIONS: D1Migration[]
   }
 }
 ```
+
+`Env` は `worker-configuration.d.ts` の生成型だけを使い、手書きしない。Secret 3種を生成型へ含めるため、`wrangler types` 実行時に `.dev.vars.example` と同じ変数名を `--env-interface Env` の対象へ反映できるconfigを維持する。binding追加・改名のたびに `npm run cf-typegen` を再実行する。
 
 ```ts
 import { Hono } from 'hono'
