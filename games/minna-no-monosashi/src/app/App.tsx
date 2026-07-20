@@ -1,7 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppLayout } from "../client/components/AppLayout";
 import { BlockIntroPage } from "../client/pages/BlockIntroPage";
+import { ClosedResultsPage } from "../client/pages/ClosedResultsPage";
 import { HomePage } from "../client/pages/HomePage";
+import { QuestionPage } from "../client/pages/QuestionPage";
+import { QuestionResultPage } from "../client/pages/QuestionResultPage";
+import { SummaryPage } from "../client/pages/SummaryPage";
 
 function NotFoundPage() {
   return (
@@ -20,6 +24,10 @@ export function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/play/:slug" element={<BlockIntroPage />} />
+          <Route path="/play/:slug/questions/:position" element={<QuestionPage />} />
+          <Route path="/play/:slug/questions/:position/result" element={<QuestionResultPage />} />
+          <Route path="/play/:slug/summary" element={<SummaryPage />} />
+          <Route path="/results/:slug" element={<ClosedResultsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AppLayout>
