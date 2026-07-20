@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "@cloudflare/vitest-pool-workers/types"],
     "composite": true
   },
   "include": [

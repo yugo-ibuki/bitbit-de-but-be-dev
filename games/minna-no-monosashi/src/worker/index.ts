@@ -1,5 +1,3 @@
-export default {
-  async fetch(): Promise<Response> {
-    return new Response("Not Found", { status: 404 });
-  },
-} satisfies ExportedHandler<Env>;
+import { createApp } from "./app";
+
+export default createApp();
