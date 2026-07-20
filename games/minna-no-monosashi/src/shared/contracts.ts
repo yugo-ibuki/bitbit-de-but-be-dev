@@ -48,3 +48,25 @@ export type AnswerOutcome = QuestionResult & {
   created: boolean;
   selectedOptionId: string;
 };
+
+export type AdminOption = PublicOption;
+
+export type AdminQuestion = PublicQuestion;
+
+export type AdminBlock = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  status: "draft" | PublicBlockStatus;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
+  closedAt: string | null;
+  questions: AdminQuestion[];
+};
+
+export type AdminBlockSummary = Omit<AdminBlock, "questions"> & {
+  questionCount: number;
+  participantCount: number;
+};

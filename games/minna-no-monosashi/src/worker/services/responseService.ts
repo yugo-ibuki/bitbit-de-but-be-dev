@@ -109,6 +109,15 @@ export class ResponseService {
     );
   }
 
+  async adminBlockResults(blockId: string): Promise<QuestionResult[]> {
+    const questionIds = await this.repository.listQuestionIds(blockId);
+    return Promise.all(
+      questionIds.map((questionId) =>
+        this.buildResult(questionId, null, false),
+      ),
+    );
+  }
+
   private async resolveExisting(
     questionId: string,
     existingOptionId: string,
