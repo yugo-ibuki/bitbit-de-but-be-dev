@@ -29,3 +29,22 @@ export type PublicBlockDetail = PublicBlockSummary & {
 export type ApiErrorBody = {
   error: { code: string; message: string };
 };
+
+export type QuestionResultOption = {
+  id: string;
+  label: string;
+  count: number;
+  percentage: number;
+};
+
+export type QuestionResult = {
+  questionId: string;
+  selectedOptionId: string | null;
+  totalResponses: number;
+  options: QuestionResultOption[];
+};
+
+export type AnswerOutcome = QuestionResult & {
+  created: boolean;
+  selectedOptionId: string;
+};
