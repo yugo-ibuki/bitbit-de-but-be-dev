@@ -1,4 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AdminDashboardPage } from "../client/admin/AdminDashboardPage";
+import { AdminLoginPage } from "../client/admin/AdminLoginPage";
+import { AdminPreviewPage } from "../client/admin/AdminPreviewPage";
+import { AdminResultsPage } from "../client/admin/AdminResultsPage";
+import { BlockEditorPage } from "../client/admin/BlockEditorPage";
 import { AppLayout } from "../client/components/AppLayout";
 import { BlockIntroPage } from "../client/pages/BlockIntroPage";
 import { ClosedResultsPage } from "../client/pages/ClosedResultsPage";
@@ -28,6 +33,12 @@ export function App() {
           <Route path="/play/:slug/questions/:position/result" element={<QuestionResultPage />} />
           <Route path="/play/:slug/summary" element={<SummaryPage />} />
           <Route path="/results/:slug" element={<ClosedResultsPage />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/blocks/new" element={<BlockEditorPage />} />
+          <Route path="/admin/blocks/:id/edit" element={<BlockEditorPage />} />
+          <Route path="/admin/blocks/:id/preview" element={<AdminPreviewPage />} />
+          <Route path="/admin/blocks/:id/results" element={<AdminResultsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AppLayout>
