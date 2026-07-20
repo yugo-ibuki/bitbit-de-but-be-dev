@@ -12,7 +12,7 @@ export default defineConfig({
       miniflare: {
         bindings: {
           ADMIN_PASSWORD_HASH:
-            "pbkdf2-sha256$210000$bWlubmEtbm8tbW9ub3Nhc2hpLWRldg==$NZZzZOqqD6oGmwTJ86r/pFEoY5sZ2UWZclDfdeOJLOM=",
+            "pbkdf2-sha256$100000$bWlubmEtbm8tbW9ub3Nhc2hpLWRldg==$PnugNfLn0ZH0ipIIMRZRuG6XtVIDeg7ty6MKPNnbqdU=",
           SESSION_SECRET: "test-session-secret",
           VOTER_HASH_SECRET: "test-voter-secret",
           TEST_MIGRATIONS: await readD1Migrations(

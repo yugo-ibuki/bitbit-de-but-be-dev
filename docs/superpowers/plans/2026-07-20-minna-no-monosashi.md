@@ -732,7 +732,7 @@ Expected: FAIL because auth routes do not exist。
 
 - [ ] **Step 3: PBKDF2 hash生成と検証を実装する**
 
-hashはアルゴリズム名、反復回数、saltのBase64、32bytes hashのBase64を `$` で連結する。開発値の完全な例はStep 5の `ADMIN_PASSWORD_HASH` とする。生成scriptは `crypto.randomBytes(16)` と `pbkdf2Sync(password, salt, 210000, 32, 'sha256')` を使い、passwordを引数または非表示promptから受け取る。Worker側はWeb Crypto PBKDF2で同じ32bytesを導出し、固定時間比較する。
+hashはアルゴリズム名、反復回数、saltのBase64、32bytes hashのBase64を `$` で連結する。開発値の完全な例はStep 5の `ADMIN_PASSWORD_HASH` とする。生成scriptは `crypto.randomBytes(16)` と、Cloudflare Workers本番ランタイムの上限に合わせた `pbkdf2Sync(password, salt, 100000, 32, 'sha256')` を使い、passwordを引数または非表示promptから受け取る。Worker側はWeb Crypto PBKDF2で同じ32bytesを導出し、固定時間比較する。
 
 - [ ] **Step 4: 署名sessionとCSRFを実装する**
 
@@ -743,7 +743,7 @@ session payloadはUnix秒の有効期限 `exp` と128bit乱数の16進文字列 
 - [ ] **Step 5: 開発用秘密値例を追加する**
 
 ```dotenv
-ADMIN_PASSWORD_HASH=pbkdf2-sha256$210000$bWlubmEtbm8tbW9ub3Nhc2hpLWRldg==$NZZzZOqqD6oGmwTJ86r/pFEoY5sZ2UWZclDfdeOJLOM=
+ADMIN_PASSWORD_HASH=pbkdf2-sha256$100000$bWlubmEtbm8tbW9ub3Nhc2hpLWRldg==$PnugNfLn0ZH0ipIIMRZRuG6XtVIDeg7ty6MKPNnbqdU=
 SESSION_SECRET=local-only-session-secret-change-before-deploy
 VOTER_HASH_SECRET=local-only-voter-secret-change-before-deploy
 ```

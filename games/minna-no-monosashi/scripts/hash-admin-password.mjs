@@ -37,7 +37,7 @@ const password = process.argv[2] ?? (await readHidden("Admin password: "));
 if (password.length < 8) {
   throw new Error("Password must contain at least 8 characters");
 }
-const iterations = 210_000;
+const iterations = 100_000;
 const salt = randomBytes(16);
 const hash = pbkdf2Sync(password, salt, iterations, 32, "sha256");
 console.log(

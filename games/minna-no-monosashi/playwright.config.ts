@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const remoteBaseUrl = process.env.BASE_URL;
+
 export default defineConfig({
   testDir: "./e2e",
   timeout: 90_000,
@@ -8,10 +10,10 @@ export default defineConfig({
   retries: 0,
   reporter: "list",
   use: {
-    baseURL: "http://localhost:5173",
+    baseURL: remoteBaseUrl ?? "http://localhost:5173",
     trace: "retain-on-failure",
   },
-  webServer: {
+  webServer: remoteBaseUrl ? undefined : {
     command:
       "npm run db:migrate:local && npm run db:seed:local && npm run dev -- --host localhost",
     url: "http://localhost:5173",

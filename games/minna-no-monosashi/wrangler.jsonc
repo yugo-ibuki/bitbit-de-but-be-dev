@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "minna-no-monosashi",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "6715e137-0d7f-4e09-aa69-a6405871e297",
       "migrations_dir": "migrations"
     }
   ],

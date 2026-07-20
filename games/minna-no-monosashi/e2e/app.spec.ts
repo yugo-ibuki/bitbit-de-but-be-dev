@@ -8,7 +8,9 @@ test("admin publishes ten questions and anonymous visitors answer once", async (
   const slug = `e2e-${runId}`;
 
   await page.goto("/admin/login");
-  await page.getByLabel("管理者パスワード").fill("dev-admin");
+  await page
+    .getByLabel("管理者パスワード")
+    .fill(process.env.ADMIN_PASSWORD ?? "dev-admin");
   await page.getByRole("button", { name: "ログイン" }).click();
   await expect(page.getByRole("heading", { name: "質問ブロック" })).toBeVisible();
   await page.getByRole("link", { name: "新しく作る" }).click();
