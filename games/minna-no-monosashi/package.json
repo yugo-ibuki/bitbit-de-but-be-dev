@@ -15,6 +15,7 @@
     "test:worker": "vitest run --config vitest.worker.config.ts",
     "test:e2e": "playwright test",
     "preview": "vite preview",
+    "hash-admin-password": "node scripts/hash-admin-password.mjs",
     "cf-typegen": "wrangler types",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
     "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
