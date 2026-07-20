@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { publicRoutes } from "./routes/publicRoutes";
 
 export function createApp() {
   const app = new Hono<{ Bindings: Env }>();
@@ -13,7 +14,7 @@ export function createApp() {
     );
   });
 
-  app.get("/api/blocks", (context) => context.json({ blocks: [] }));
+  app.route("/api", publicRoutes());
 
   return app;
 }
