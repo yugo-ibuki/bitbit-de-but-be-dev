@@ -31,7 +31,7 @@ export type JobRequestParseResult =
   | { success: true; data: JobRequest }
   | { success: false; error: JobValidationError };
 
-function isRecord(value: unknown): value is Record<string, unknown> {
+export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
@@ -45,8 +45,38 @@ function invalid(message: string): JobRequestParseResult {
   };
 }
 
-function isOperation(value: unknown): value is Operation {
+export function isOperation(value: unknown): value is Operation {
   return value === "sum" || value === "average" || value === "max";
+}
+
+export function isJobMessage(value: unknown): value is JobMessage {
+  return (
+    isRecord(value) &&
+    typeof value.jobId === "string" &&
+    value.jobId.length > 0 &&
+    typeof value.submittedAt === "string" &&
+    isRecord(value.target) &&
+    typeof value.target.id === "string" &&
+    Array.isArray(value.target.values) &&
+    value.target.values.length > 0 &&
+    value.target.values.every(
+      (entry) => typeof entry === "number" && Number.isFinite(entry),
+    ) &&
+    isOperation(value.operation) &&
+    typeof value.failStepBOnce === "boolean"
+  );
+}
+
+export function isAuditMessage(value: unknown): value is AuditMessage {
+  return (
+    isRecord(value) &&
+    value.eventType === "job.submitted" &&
+    typeof value.jobId === "string" &&
+    value.jobId.length > 0 &&
+    typeof value.submittedAt === "string" &&
+    typeof value.targetId === "string" &&
+    value.targetId.length > 0
+  );
 }
 
 export function parseJobRequest(value: unknown): JobRequestParseResult {
