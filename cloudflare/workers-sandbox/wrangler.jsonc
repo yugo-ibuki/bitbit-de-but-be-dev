@@ -1,0 +1,55 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "workers-sandbox-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-26",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    }
+  },
+  "queues": {
+    "producers": [
+      {
+        "binding": "JOB_QUEUE",
+        "queue": "workers-sandbox-jobs"
+      },
+      {
+        "binding": "AUDIT_QUEUE",
+        "queue": "workers-sandbox-audit"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "workers-sandbox-jobs",
+        "max_batch_size": 5,
+        "max_batch_timeout": 1,
+        "max_retries": 3,
+        "retry_delay": 2,
+        "dead_letter_queue": "workers-sandbox-jobs-dlq",
+        "max_concurrency": 10
+      },
+      {
+        "queue": "workers-sandbox-audit",
+        "max_batch_size": 10,
+        "max_batch_timeout": 1,
+        "max_retries": 3,
+        "retry_delay": 2,
+        "max_concurrency": 5
+      }
+    ]
+  },
+  "workflows": [
+    {
+      "binding": "JOB_WORKFLOW",
+      "name": "workers-sandbox-job-workflow",
+      "class_name": "JobWorkflow"
+    }
+  ]
+}
