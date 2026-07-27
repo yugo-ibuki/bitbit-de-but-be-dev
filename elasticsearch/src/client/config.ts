@@ -17,7 +17,7 @@ export const indexSettings = {
     analysis: {
       analyzer: {
         japanese_analyzer: {
-          type: 'custom',
+          type: 'custom' as const,
           tokenizer: 'standard',
           filter: ['lowercase', 'stop']
         }
@@ -26,25 +26,25 @@ export const indexSettings = {
   },
   mappings: {
     properties: {
-      id: { type: 'keyword' },
+      id: { type: 'keyword' as const },
       title: {
-        type: 'text',
+        type: 'text' as const,
         analyzer: 'japanese_analyzer',
         fields: {
-          keyword: { type: 'keyword' }
+          keyword: { type: 'keyword' as const }
         }
       },
       content: {
-        type: 'text',
+        type: 'text' as const,
         analyzer: 'japanese_analyzer'
       },
-      author: { type: 'keyword' },
-      category: { type: 'keyword' },
-      tags: { type: 'keyword' },
-      created_at: { type: 'date' },
-      updated_at: { type: 'date' },
-      view_count: { type: 'integer' },
-      is_published: { type: 'boolean' }
+      author: { type: 'keyword' as const },
+      category: { type: 'keyword' as const },
+      tags: { type: 'keyword' as const },
+      created_at: { type: 'date' as const },
+      updated_at: { type: 'date' as const },
+      view_count: { type: 'integer' as const },
+      is_published: { type: 'boolean' as const }
     }
   }
 };
