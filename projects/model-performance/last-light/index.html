@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#050809" />
+    <meta name="description" content="暗い廃棄施設から脱出する短編2Dホラーゲーム LAST LIGHT" />
+    <title>LAST LIGHT — PixiJS Horror</title>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="masthead">
+        <div>
+          <p class="eyebrow">A PIXIJS NIGHTMARE</p>
+          <h1>LAST LIGHT</h1>
+        </div>
+        <div class="status" aria-live="polite">
+          <span>FUSES</span>
+          <strong id="progress">0 / 3</strong>
+        </div>
+      </header>
+
+      <section id="game-frame" class="game-frame" aria-label="ゲーム画面">
+        <div id="game" class="game" role="application" aria-label="WASDとマウスで移動と照準を別々に操作。矢印キーだけでも移動方向へ自動照準します"></div>
+        <div class="vignette" aria-hidden="true"></div>
+        <div id="noise" class="noise" aria-hidden="true"></div>
+        <div id="message" class="message" aria-live="polite"></div>
+
+        <div id="overlay" class="overlay">
+          <p id="overlay-kicker" class="overlay-kicker">WARD 03 // POWER FAILURE</p>
+          <h2 id="overlay-title">THE DARK IS MOVING.</h2>
+          <p id="overlay-copy">散らばった3つのヒューズを回収し、北東の非常口へ向かえ。光の外にいるものから逃げ続けろ。</p>
+          <button id="start" class="primary" type="button">ENTER THE WARD</button>
+          <p class="controls-hint"><kbd>WASD + マウス</kbd> 移動・照準　 <kbd>矢印キーだけ</kbd> ライト自動　 <kbd>P</kbd> 一時停止</p>
+        </div>
+
+        <div class="mobile-controls" aria-label="移動コントロール">
+          <button data-direction="up" aria-label="上へ移動">▲</button>
+          <button data-direction="left" aria-label="左へ移動">◀</button>
+          <button data-direction="down" aria-label="下へ移動">▼</button>
+          <button data-direction="right" aria-label="右へ移動">▶</button>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p id="objective"><span class="pulse-dot"></span> 非常電源を復旧せよ</p>
+        <div class="footer-actions">
+          <button id="pause" type="button" aria-label="ゲームを一時停止" disabled>PAUSE</button>
+          <button id="restart" type="button">RESTART</button>
+        </div>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

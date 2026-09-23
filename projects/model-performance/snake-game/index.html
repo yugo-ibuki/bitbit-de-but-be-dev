@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="キーボードと画面上のボタンで遊べるスネークゲーム"
+    />
+    <title>Neon Snake</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">ARCADE / 001</p>
+          <h1>NEON<br /><span>SNAKE</span></h1>
+        </div>
+        <p class="hero-copy">
+          光る軌跡を伸ばして、<br />20 × 20 のグリッドを駆け抜けよう。
+        </p>
+      </header>
+
+      <section class="game-card" aria-label="スネークゲーム">
+        <div class="score-row">
+          <div class="score-block">
+            <span class="label">SCORE</span>
+            <strong id="score">000</strong>
+          </div>
+          <div class="status-block">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="status" role="status" aria-live="polite">準備完了</span>
+          </div>
+          <div class="score-block score-block--right">
+            <span class="label">LENGTH</span>
+            <strong id="length">03</strong>
+          </div>
+        </div>
+
+        <div class="board-frame">
+          <div
+            id="board"
+            class="board"
+            role="img"
+            aria-label="20掛ける20のゲーム盤。スネークの長さ3、スコア0。"
+          ></div>
+          <div id="overlay" class="overlay overlay--visible">
+            <p id="overlay-kicker" class="overlay-kicker">READY?</p>
+            <strong id="overlay-title">ルートを描こう</strong>
+            <span id="overlay-detail">START を押してゲーム開始</span>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button id="start-button" class="button button--primary" type="button">
+            <span id="start-icon" aria-hidden="true">▶</span>
+            <span id="start-label">START</span>
+          </button>
+          <button id="restart-button" class="button button--secondary" type="button">
+            <span aria-hidden="true">↻</span>
+            RESTART
+          </button>
+        </div>
+      </section>
+
+      <section class="controls-panel" aria-labelledby="controls-title">
+        <div class="controls-copy">
+          <p class="eyebrow">CONTROLS</p>
+          <h2 id="controls-title">進む方向を選択</h2>
+          <p>矢印キー / WASD / 画面上のボタン</p>
+        </div>
+
+        <div class="direction-pad" aria-label="方向操作">
+          <button class="direction direction--up" data-direction="up" type="button" aria-label="上へ進む">↑</button>
+          <button class="direction direction--left" data-direction="left" type="button" aria-label="左へ進む">←</button>
+          <span class="direction-pad__center" aria-hidden="true"></span>
+          <button class="direction direction--right" data-direction="right" type="button" aria-label="右へ進む">→</button>
+          <button class="direction direction--down" data-direction="down" type="button" aria-label="下へ進む">↓</button>
+        </div>
+
+        <dl class="key-guide">
+          <div><dt>SPACE</dt><dd>開始 / 一時停止</dd></div>
+          <div><dt>R</dt><dd>リスタート</dd></div>
+        </dl>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
