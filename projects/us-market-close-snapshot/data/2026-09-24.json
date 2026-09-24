@@ -1,0 +1,57 @@
+{
+  "marketSessionDate": "2026-09-24",
+  "scheduledAt": "2026-09-25T06:30:00+09:00",
+  "capturedAt": "2026-09-25T06:52+09:00",
+  "capturedAtPrecision": "minute",
+  "sourceUrl": "https://sekai-kabuka.com/pc-index.html",
+  "calendarSourceUrl": "https://www.nyse.com/trade/hours-calendars",
+  "valueType": "引け後の取得値",
+  "officialCloseVerified": false,
+  "notes": "ブラウザーのアクセシビリティ表示で4指数を取得。capturedAtは取得画面の日本時間表示に基づく分単位の記録で、秒は未確認。ページの時計は指数の確定時刻ではない。予定時刻より遅れて取得。各指標の取引日と確定時刻は確認できないためnull。marketSessionDateは保存対象の米国セッション日であり、各指標の取引日を保証しない。rawTextはアクセシビリティ表示のカードテキスト。",
+  "quotes": [
+    {
+      "id": "dow",
+      "name": "ダウ平均",
+      "value": 51349.98,
+      "change": -161.61,
+      "changePercent": -0.31,
+      "quoteDate": null,
+      "quoteTimestamp": null,
+      "sourceElementId": "NN6",
+      "rawText": "51,349.98 -161.61 ダウ平均 -0.31 %"
+    },
+    {
+      "id": "nasdaq",
+      "name": "ナスダック",
+      "value": 26939.37,
+      "change": 3.34,
+      "changePercent": 0.01,
+      "quoteDate": null,
+      "quoteTimestamp": null,
+      "sourceElementId": "NN8",
+      "rawText": "26,939.37 +3.34 ナスダック +0.01 %"
+    },
+    {
+      "id": "sp500",
+      "name": "S&P500",
+      "value": 7704.13,
+      "change": -1.9,
+      "changePercent": -0.02,
+      "quoteDate": null,
+      "quoteTimestamp": null,
+      "sourceElementId": "NN9",
+      "rawText": "7,704.13 -1.90 S&P500 -0.02 %"
+    },
+    {
+      "id": "nikkei225",
+      "name": "日経平均",
+      "value": 65513.99,
+      "change": 495.04,
+      "changePercent": 0.76,
+      "quoteDate": null,
+      "quoteTimestamp": null,
+      "sourceElementId": "NN0",
+      "rawText": "65,513.99 +495.04 日経平均 +0.76 %"
+    }
+  ]
+}
