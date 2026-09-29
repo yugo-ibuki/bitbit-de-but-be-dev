@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iframe Cookie 検証 - 親ページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.clear {
+            background-color: #f44336;
+        }
+        button.clear:hover {
+            background-color: #da190b;
+        }
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .cookie-display {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .cookie-item {
+            font-family: monospace;
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #fff;
+            border-radius: 3px;
+        }
+        .label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .info {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🍪 iframe内でのCookie取得検証</h1>
+
+    <div class="container">
+        <h2>親ページ (Same-origin)</h2>
+        <div class="info">
+            <strong>このページについて:</strong> Cookie設定と表示を行います。
+        </div>
+
+        <div>
+            <button onclick="setCookies()">Cookieを設定</button>
+            <button onclick="showParentCookies()">親ページのCookieを表示</button>
+            <button onclick="clearAllCookies()" class="clear">すべてのCookieをクリア</button>
+        </div>
+
+        <div id="parentCookies" class="cookie-display" style="display:none;">
+            <div class="label">親ページのCookie:</div>
+            <div id="parentCookieList"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Same-origin iframe (同じドメイン)</h2>
+        <div class="info">
+            <strong>期待される動作:</strong> 親ページと同じドメインなので、Cookieにアクセスできるはずです。
+        </div>
+        <iframe id="sameOriginFrame" src="/iframe.html"></iframe>
+    </div>
+
+    <div class="container">
+        <h2>Sandbox属性付きiframe</h2>
+        <div class="info">
+            <strong>期待される動作:</strong> sandboxアトリビュートにより制限されます。<br>
+            <code>allow-scripts</code>のみ: Cookieアクセスが制限される可能性があります。
+        </div>
+        <iframe id="sandboxFrame" src="/iframe.html" sandbox="allow-scripts"></iframe>
+    </div>
+
+    <div class="container">
+        <h2>Sandbox属性付きiframe (same-origin許可)</h2>
+        <div class="info">
+            <strong>期待される動作:</strong> <code>allow-same-origin</code>を追加することで、Cookieにアクセスできるはずです。
+        </div>
+        <iframe id="sandboxSameOriginFrame" src="/iframe.html" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+
+    <div class="container" style="border: 3px solid #4caf50;">
+        <h2>🌐 Cross-Origin iframe (異なるドメイン/ポート)</h2>
+        <div class="info" style="background-color: #e8f5e9; border-left: 4px solid #4caf50;">
+            <strong>期待される動作:</strong> 異なるオリジン（localhost:9473）からのiframeです。<br>
+            ❌ 親ページのCookieにはアクセス<strong>できません</strong><br>
+            ✅ 自分自身のオリジンのCookieにはアクセス可能<br>
+            ✅ postMessage による通信は可能<br>
+            <br>
+            <strong>⚠️ 注意:</strong> このセクションを動作させるには、別ターミナルで<br>
+            <code>node server-cross-origin.js</code> を実行してください。
+        </div>
+        <iframe id="crossOriginFrame" src="http://localhost:9473/iframe-cross-origin.html" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+
+    <script src="/parent.js"></script>
+</body>
+</html>
