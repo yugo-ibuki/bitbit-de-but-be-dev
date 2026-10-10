@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>ORBIT BREAKER</title><link rel="stylesheet" href="/src/style.css"></head>
+<body>
+  <main id="app">
+    <section class="game-shell" aria-label="ORBIT BREAKER ゲーム画面">
+      <div id="game"></div>
+      <header id="hud" class="hud hidden" aria-live="polite">
+        <div class="hud-cell"><span>SCORE</span><strong id="score">000000</strong></div>
+        <div class="hud-cell hud-center"><span>TIME</span><strong id="time">60.0</strong></div>
+        <div class="hud-cell hud-center"><span>POWER</span><strong id="level">LV 1</strong></div>
+        <div class="hud-cell hud-right"><span>SHIELD</span><strong id="lives">◆ ◆ ◆</strong></div>
+        <div class="power-track"><i id="power-fill"></i><span id="kills">撃破 0 / 次の強化 6</span></div>
+      </header>
+      <div class="corner-controls">
+        <button id="sound" class="icon-button" aria-label="サウンドを切り替える">音 ON</button>
+        <button id="pause" class="icon-button hidden" aria-label="一時停止">Ⅱ</button>
+      </div>
+      <section id="overlay" class="overlay">
+        <div class="panel">
+          <p class="eyebrow">60 SEC SURVIVAL</p>
+          <h1>ORBIT<br><em>BREAKER</em></h1>
+          <p id="message" class="lead">敵を倒すほど自動で強くなる。60秒間、生き残れ。</p>
+          <div id="result" class="result hidden"></div>
+          <div class="controls">
+            <div><kbd>WASD</kbd><span>または矢印キーで移動</span></div>
+            <div><kbd>DRAG</kbd><span>画面をドラッグして移動</span></div>
+            <div><kbd>P / ESC</kbd><span>一時停止</span></div>
+            <small>自動射撃。撃破で火力上昇。黄・紫の敵はHPバーを削り切れ</small>
+          </div>
+          <button id="primary" class="primary">出撃する</button>
+          <p id="best" class="best">BEST 000000</p>
+        </div>
+      </section>
+      <div id="toast" class="toast hidden"></div>
+    </section>
+  </main>
+  <script type="module" src="/src/main.ts"></script>
+</body></html>
