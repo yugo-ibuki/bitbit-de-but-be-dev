@@ -144,7 +144,7 @@ def finish(nb, bsdf):
 # ---------------------------------------------------------------- materials
 def wood_material(name, axis, dark, mid, light, raw, rough=0.42, wear_amt=1.0,
                   dust_amt=0.55, crack_amt=1.0, scratch_amt=1.0, grime_amt=0.85,
-                  rings=(), varnish=0.55, grain_scale=9.0):
+                  rings=(), varnish=0.55, grain_scale=9.0, streak_lo=0.5):
     """axis: 木目が走る方向 (0=X, 1=Y, 2=Z / オブジェクトローカル)"""
     mat = bpy.data.materials.new(name)
     nb = NB(mat)
@@ -185,7 +185,7 @@ def wood_material(name, axis, dark, mid, light, raw, rough=0.42, wear_amt=1.0,
     pores = NOISE(nb, stretched(0.012, 1.0), 260, detail=1, rough=0.5)
 
     col = RAMP(nb, grain, [(0.0, dark), (0.22, dark), (0.55, mid), (1.0, light)])
-    col = MIX(nb, 1.0, col, RAMP(nb, streak, [(0.3, (0.40,) * 3), (0.7, (1.35,) * 3)]),
+    col = MIX(nb, 1.0, col, RAMP(nb, streak, [(0.3, (streak_lo,) * 3), (0.7, (1.25,) * 3)]),
               "MULTIPLY")
     blotch = NOISE(nb, obj, 2.6, detail=5, rough=0.6, dist=0.4)
     col = MIX(nb, 0.45, col, RAMP(nb, blotch, [(0.3, (0.25,) * 3), (0.7, (0.75,) * 3)]),
@@ -358,9 +358,9 @@ def plaster_material():
                 lin("#a69a85"), lin("#7d725f"))
     col = MIX(nb, peel, paint, under)
     # 縦方向の雨だれ
-    drip = RAMPF(nb, NOISE(nb, MAP(nb, pos, scale=(7, 7, 0.45)), 2.2, detail=4),
-                 [(0.45, 0.0), (0.72, 1.0)])
-    col = MIX(nb, M(nb, "MULTIPLY", drip, 0.38), col, lin("#2c241a"))
+    drip = RAMPF(nb, NOISE(nb, MAP(nb, pos, scale=(2.2, 2.2, 0.5)), 1.6, detail=4),
+                 [(0.45, 0.0), (0.75, 1.0)])
+    col = MIX(nb, M(nb, "MULTIPLY", drip, 0.30), col, lin("#2c241a"))
     col = MIX(nb, 0.35, col, RAMP(nb, fine, [(0.3, (0.7,) * 3), (0.7, (1.2,) * 3)]), "MULTIPLY")
     h = M(nb, "MULTIPLY_ADD", peel, -0.8, 1.0)
     h = M(nb, "MULTIPLY_ADD", M(nb, "SUBTRACT", fine, 0.5), 0.35, h)
@@ -393,7 +393,7 @@ MAT_PINE_Y = wood_material("pine_unfinished_y", 1, lin("#7a5a35"), lin("#a07a48"
                            dust_amt=0.4, varnish=0.0, crack_amt=0.3, grain_scale=7)
 MAT_FLOOR = wood_material("floor_boards", 0, lin("#150c07"), lin("#30221a"), lin("#4c3a28"),
                           lin("#8a6c48"), rough=0.6, wear_amt=0.7, dust_amt=1.4,
-                          varnish=0.25, grime_amt=0.95, grain_scale=7)
+                          varnish=0.25, grime_amt=0.95, grain_scale=7, streak_lo=0.7)
 MAT_BASE = wood_material("baseboard", 0, lin("#20150d"), lin("#3a2a1c"), lin("#54402b"),
                          lin("#8a6c48"), rough=0.62, wear_amt=0.6, dust_amt=0.8,
                          varnish=0.1)
@@ -613,7 +613,7 @@ def occ_box(name, size, local):
 _p0 = Vector((0.0, -0.25, 0.45))                      # キャビネット前面の中心付近
 _hit = _p0 + (4.2 - _p0.dot(sun_dir)) * sun_dir
 _loc = rq.inverted() @ (_hit - occ_origin)
-WX, WY = _loc.x + float(os.environ.get("WIN_DX", "0.05")), _loc.y + float(os.environ.get("WIN_DY", "0.1"))
+WX, WY = _loc.x + float(os.environ.get("WIN_DX", "0.55")), _loc.y + float(os.environ.get("WIN_DY", "0.1"))
 WW, WH = 1.5, 2.0                                    # 窓の大きさ
 BIG = 12.0
 occ_box("occ_l", (BIG, BIG, 0.05), (WX - WW / 2 - BIG / 2, 0, 0))
@@ -668,6 +668,18 @@ r.resolution_x, r.resolution_y = (480, 320) if QUICK else (800, 534) if PREVIEW 
 r.resolution_percentage = 100
 cy = scene.cycles
 cy.device = "CPU"
+if os.environ.get("DEVICE", "GPU") == "GPU":     # Metal が使えれば GPU、なければ CPU のまま
+    prefs = bpy.context.preferences.addons["cycles"].preferences
+    prefs.compute_device_type = "METAL"
+    prefs.get_devices()
+    gpus = [d for d in prefs.devices if d.type == "METAL"]
+    for d in prefs.devices:
+        d.use = d in gpus
+    if gpus:
+        cy.device = "GPU"
+cy.preview_samples = 32                          # Rendered 表示を軽くする
+cy.preview_denoiser = "OPENIMAGEDENOISE"
+cy.use_preview_denoising = True
 cy.samples = 14 if QUICK else 40 if PREVIEW else 120
 cy.use_adaptive_sampling = True
 cy.adaptive_threshold = 0.02
