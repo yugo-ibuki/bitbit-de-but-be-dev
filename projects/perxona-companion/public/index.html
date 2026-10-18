@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1ff"><title>Luma / Local Avatar Companion</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Luma ホーム"><span class="brand-mark" aria-hidden="true">L</span><span><strong>Luma</strong><small>Local Avatar Companion</small></span></a>
+      <div class="top-actions"><div class="connection-pill" id="connection-pill"><span class="status-dot"></span><span id="connection-label">準備中</span></div><button class="icon-button" id="settings-button" type="button">設定</button></div>
+    </header>
+    <section class="workspace">
+      <section class="stage-card" aria-labelledby="stage-heading">
+        <div class="stage-heading"><div><p class="eyebrow">YOUR COMPANION</p><h1 id="stage-heading">会話に、表情と動きを。</h1></div><button id="interrupt-button" class="ghost-button" type="button" disabled>発話を止める</button></div>
+        <div class="stage" id="stage">
+          <div class="stage-placeholder" id="stage-placeholder"><div class="orb" aria-hidden="true"><span></span><span></span><span></span></div><p class="stage-kicker">LOCAL VRM</p><h2 id="stage-message">Lumaを準備しています</h2><p id="stage-detail">端末内の3Dモデルを読み込んでいます。</p></div>
+          <div id="avatar-host" class="avatar-host" aria-label="Lumaの3Dアバター"></div>
+          <div class="stage-status" aria-live="polite" id="stage-status">読み込み中</div>
+        </div>
+        <div class="stage-footer"><span>3D表示と音声はこのMacで処理されます</span><span id="diagnostic-status">3Dモデルを準備中</span></div>
+      </section>
+      <section class="chat-card" aria-labelledby="chat-heading">
+        <div class="chat-header"><div><p class="eyebrow">CHAT WITH LUMA</p><h2 id="chat-heading">今日は何を話そう？</h2></div><span class="model-badge" id="model-badge">Codex</span></div>
+        <div class="messages" id="messages" role="log" aria-live="polite"><article class="message assistant"><div class="avatar-mini">L</div><div><span class="speaker">Luma</span><p>こんにちは。気になっていることや、今日あったことを聞かせてね。</p></div></article></div>
+        <div class="suggestions" id="suggestions"><button type="button">今日の出来事を聞いて</button><button type="button">気分転換の話をしよう</button><button type="button">少し励ましてほしい</button></div>
+        <form class="composer" id="chat-form"><label class="sr-only" for="message-input">メッセージ</label><textarea id="message-input" rows="2" maxlength="4000" placeholder="Lumaに話しかける…" required></textarea><div class="composer-footer"><span id="input-status">テキスト入力</span><button class="send-button" id="send-button" type="submit">送信 <span aria-hidden="true">↗</span></button></div></form>
+        <p class="chat-error" id="chat-error" role="alert" hidden></p>
+      </section>
+    </section>
+  </main>
+  <dialog id="settings-dialog" class="settings-dialog">
+    <form method="dialog" class="dialog-shell">
+      <header class="dialog-header"><div><p class="eyebrow">LOCAL SETTINGS</p><h2>Lumaの設定</h2></div><button class="close-button" value="cancel" aria-label="閉じる">×</button></header>
+      <div class="setup-notice ready"><strong>ローカルアバターとmacOS音声</strong><p>外部アバターサービスやブラウザ音声は使いません。</p></div>
+      <div class="field-grid">
+        <label>音声<select id="voice-select"><option>読み込み中</option></select></label>
+        <label>動き<select id="gesture-select"><option value="auto">会話に合わせる</option><option value="nod">うなずく</option><option value="wave">手を振る</option><option value="bow">お辞儀</option></select></label>
+        <label>背景<select id="background-select"><option value="lavender">ラベンダー</option><option value="mint">ミント</option><option value="ivory">アイボリー</option></select></label>
+      </div>
+      <p class="dialog-status" id="dialog-status" role="status">設定はこのブラウザ内に保存されます。</p>
+      <footer class="dialog-footer"><button class="secondary-button" id="play-motion-button" type="button">動きを試す</button><button class="primary-button" value="ok">完了</button></footer>
+    </form>
+  </dialog>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

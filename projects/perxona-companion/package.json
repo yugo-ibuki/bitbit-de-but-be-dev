@@ -1,0 +1,24 @@
+{
+  "name": "perxona-companion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.9.0"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prestart": "npm run build",
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "dev": "npm run build && node --env-file-if-exists=.env --watch server.mjs",
+    "test": "node --test",
+    "check": "node --check server.mjs && node --check lib/codex.mjs && node --check lib/speech.mjs && node --check public/app.js && node --check public/avatar.js && node --check public/conversation.js"
+  },
+  "dependencies": {
+    "@pixiv/three-vrm": "3.5.5",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}
